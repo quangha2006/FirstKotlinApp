@@ -9,27 +9,32 @@ import android.widget.TextView
 import java.util.ArrayList
 
 
-class DataAdapter : RecyclerView.Adapter<DataAdapter.ViewHolder>() , Filterable{
-    private var mArrayList: ArrayList<AndroidVersion>? = null
-    private var mFilteredList: ArrayList<AndroidVersion>? = null
+class DataAdapter : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
+    private lateinit var mArrayList: ArrayList<AndroidVersion>
+    private lateinit var mFilteredList: ArrayList<AndroidVersion>
 
     fun DataAdapter(arrayList: ArrayList<AndroidVersion>) {
         mArrayList = arrayList
         mFilteredList = arrayList
     }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_row, viewGroup, false)
+        val view =
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_row, viewGroup, false)
         return ViewHolder(view)
     }
+
     override fun onBindViewHolder(viewHolder: DataAdapter.ViewHolder, i: Int) {
 
-        viewHolder.tv_name.setText(mFilteredList[i].getName())
-        viewHolder.tv_version.setText(mFilteredList[i].getVer())
-        viewHolder.tv_api_level.setText(mFilteredList[i].getApi())
+        viewHolder.tvname.text = (mFilteredList[i].getName())
+        viewHolder.tvversion.text = (mFilteredList[i].getVer())
+        viewHolder.tvapi_level.text = (mFilteredList[i].getApi())
     }
+
     override fun getItemCount(): Int {
-        return mFilteredList.size()
+        return mFilteredList.size
     }
+
     override fun getFilter(): Filter {
 
         return object : Filter() {
@@ -63,23 +68,20 @@ class DataAdapter : RecyclerView.Adapter<DataAdapter.ViewHolder>() , Filterable{
                 return filterResults
             }
 
-            override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
+            override fun publishResults(
+                charSequence: CharSequence,
+                filterResults: Filter.FilterResults
+            ) {
                 mFilteredList = filterResults.values as ArrayList<AndroidVersion>
                 notifyDataSetChanged()
             }
         }
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_name: TextView
-        val tv_version: TextView
-        val tv_api_level: TextView
+        val tvname: TextView = view.findViewById(R.id.tv_name)
+        val tvversion: TextView = view.findViewById(R.id.tv_version)
+        val tvapi_level: TextView = view.findViewById(R.id.tv_api_level)
 
-        init {
-            tv_name = view.findViewById(R.id.tv_name)
-            tv_version = view.findViewById(R.id.tv_version)
-            tv_api_level = view.findViewById(R.id.tv_api_level)
-
-        }
     }
 
 }
