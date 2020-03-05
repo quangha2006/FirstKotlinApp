@@ -2,7 +2,6 @@ package com.example.myfirstkotlinapplication
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import java.util.*
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.LinearLayoutManager
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val BASE_URL = "https://api.learn2crack.com"
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mArrayList: ArrayList<AndroidVersion>
-    private  var mAdapter: DataAdapter? = null
+    private lateinit var mAdapter: DataAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +50,8 @@ class MainActivity : AppCompatActivity() {
         val call = request.getJSON()
         call.enqueue(object : Callback<JSONResponse> {
             override fun onResponse(call: Call<JSONResponse>, response: Response<JSONResponse>) {
-
                 val jsonResponse = response.body()
-                mArrayList = ArrayListArrays.asList(jsonResponse.getAndroid()))
+                mArrayList = ArrayList<AndroidVersion>(jsonResponse.getAndroid())
                 mAdapter = DataAdapter(mArrayList)
                 mRecyclerView.setAdapter(mAdapter)
             }
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val search = menu.findItem(R.id.search)
-        val searchView = MenuItemCompat.getActionView(search) as SearchView
+        val searchView = search.actionView as SearchView
         search(searchView)
         return true
     }
@@ -88,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String): Boolean {
 
-                mAdapter?.getFilter()?.filter(newText)
+                mAdapter.getFilter().filter(newText)
                 return true
             }
         })

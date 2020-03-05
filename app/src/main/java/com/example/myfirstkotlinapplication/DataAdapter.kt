@@ -6,17 +6,16 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
-import java.util.ArrayList
 
 
-class DataAdapter : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
-    private lateinit var mArrayList: ArrayList<AndroidVersion>
-    private lateinit var mFilteredList: ArrayList<AndroidVersion>
+class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
+    private var mArrayList: ArrayList<AndroidVersion> = arrayList
+    private var mFilteredList: ArrayList<AndroidVersion> = arrayList
 
-    fun DataAdapter(arrayList: ArrayList<AndroidVersion>) {
-        mArrayList = arrayList
-        mFilteredList = arrayList
-    }
+//    fun DataAdapter(arrayList: ArrayList<AndroidVersion>) {
+//        mArrayList = arrayList
+//        mFilteredList = arrayList
+//    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
         val view =

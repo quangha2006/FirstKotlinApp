@@ -1,9 +1,9 @@
 package com.example.myfirstkotlinapplication
 
 class JSONResponse {
-    private val android: Array<AndroidVersion>? = null
+    private val android: ArrayList<AndroidVersion>? = null
 
-    fun getAndroid(): Array<AndroidVersion>? {
+    fun getAndroid(): ArrayList<AndroidVersion>? {
         return android
     }
 }
