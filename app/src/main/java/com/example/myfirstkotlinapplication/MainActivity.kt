@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
@@ -19,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val BASE_URL = "https://api.learn2crack.com"
+    private val BASE_URL = "http://qhcloud.ddns.net/"
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mArrayList: ArrayList<AndroidVersion>
     private lateinit var mAdapter: DataAdapter
@@ -51,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         call.enqueue(object : Callback<JSONResponse> {
             override fun onResponse(call: Call<JSONResponse>, response: Response<JSONResponse>) {
                 val jsonResponse = response.body()
-                mArrayList = ArrayList<AndroidVersion>(jsonResponse.getAndroid())
+                mArrayList = ArrayList(jsonResponse.getAndroid())
                 mAdapter = DataAdapter(mArrayList)
                 mRecyclerView.setAdapter(mAdapter)
             }
