@@ -4,6 +4,7 @@ public class AndroidVersion {
     private val ver: String? = null
     private val name: String? = null
     private val api: String? = null
+    private val releasedate: String? = null
 
     fun getVer(): String? {
         return ver
@@ -15,5 +16,9 @@ public class AndroidVersion {
 
     fun getApi(): String? {
         return api
+    }
+
+    fun getReleaseDate() : String? {
+        return releasedate
     }
 }

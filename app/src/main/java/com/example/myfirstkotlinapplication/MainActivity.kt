@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun initViews() {
-        mRecyclerView = findViewById<RecyclerView>(R.id.card_recycler_view)
+        mRecyclerView = findViewById(R.id.card_recycler_view)
         mRecyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = layoutManager

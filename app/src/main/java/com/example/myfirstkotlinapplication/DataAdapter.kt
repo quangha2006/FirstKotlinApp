@@ -12,10 +12,6 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
     private var mArrayList: ArrayList<AndroidVersion> = arrayList
     private var mFilteredList: ArrayList<AndroidVersion> = arrayList
 
-//    fun DataAdapter(arrayList: ArrayList<AndroidVersion>) {
-//        mArrayList = arrayList
-//        mFilteredList = arrayList
-//    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
         val view =
@@ -28,6 +24,7 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
         viewHolder.tvname.text = (mFilteredList[i].getName())
         viewHolder.tvversion.text = (mFilteredList[i].getVer())
         viewHolder.tvapi_level.text = (mFilteredList[i].getApi())
+        viewHolder.tvrelease_date.text = (mFilteredList[i].getReleaseDate())
     }
 
     override fun getItemCount(): Int {
@@ -80,7 +77,7 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
         val tvname: TextView = view.findViewById(R.id.tv_name)
         val tvversion: TextView = view.findViewById(R.id.tv_version)
         val tvapi_level: TextView = view.findViewById(R.id.tv_api_level)
-
+        val tvrelease_date : TextView = view.findViewById(R.id.tv_release_date)
     }
 
 }
