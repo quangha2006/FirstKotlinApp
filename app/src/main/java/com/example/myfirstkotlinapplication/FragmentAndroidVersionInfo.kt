@@ -9,36 +9,50 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_android_version_info.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-/**
- * A simple [Fragment] subclass.
- */
+import java.io.File
+
 class FragmentAndroidVersionInfo : Fragment() {
 
-    private lateinit var mRecyclerView: RecyclerView
+    private var mRecyclerView: RecyclerView? = null
     private lateinit var mArrayList: ArrayList<AndroidVersion>
     private var mAdapter: DataAdapter? = null
     private val BASE_URL = "http://qhcloud.ddns.net/"
     private val LOGTAG = "QUANGHA"
+    private var JsonResponse: JSONResponse? = null
+    private lateinit var mView: View
+    private lateinit var mContext: Context
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        val view:View = inflater.inflate(R.layout.fragment_android_version_info, container, false)
-
+        mView = inflater.inflate(R.layout.fragment_android_version_info, container, false)
+        mContext = container?.context!!
         if (container != null) {
-            initViews(container.context, view)
-            loadJSON(container.context)
+            initViews()
         }
+        return mView
+    }
 
-        return view
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setAdapter()
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mRecyclerView!!.adapter = null
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -50,14 +64,13 @@ class FragmentAndroidVersionInfo : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return super.onOptionsItemSelected(item)
     }
-    private fun initViews(context: Context, view:View) {
-        mRecyclerView = view.card_recycler_view
-        mRecyclerView.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(context)
-        mRecyclerView.layoutManager = layoutManager
-
+    private fun initViews() {
+        mRecyclerView = mView.card_recycler_view
+        mRecyclerView!!.setHasFixedSize(true)
+        mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
     }
-    private fun loadJSON(context:Context) {
+
+    private fun loadJSON() {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -69,14 +82,16 @@ class FragmentAndroidVersionInfo : Fragment() {
                 if (response.isSuccessful) {
                     val timeResponse = response.raw().receivedResponseAtMillis() - response.raw().sentRequestAtMillis()
                     Log.i(LOGTAG, "Request response time: " + timeResponse + "ms")
-                    val myToast = Toast.makeText(context,"Request response time: " + timeResponse + "ms",
+                    val myToast = Toast.makeText(
+                        mContext,"Request response time: " + timeResponse + "ms",
                         Toast.LENGTH_LONG)
                     myToast.show()
 
-                    val jsonResponse = response.body()
-                    mArrayList = ArrayList(jsonResponse.getAndroid())
+                    JsonResponse = response.body()
+                    mArrayList = ArrayList(JsonResponse!!.getAndroid())
                     mAdapter = DataAdapter(mArrayList)
-                    mRecyclerView.adapter = mAdapter
+                    Log.i(LOGTAG, "File version: " + JsonResponse!!.getFileVersion())
+                    setAdapter()
                 } else {
                     Log.e(LOGTAG, "Request URL: " + response.raw().request().url().toString() + " code: " + response.code())
                 }
@@ -86,6 +101,15 @@ class FragmentAndroidVersionInfo : Fragment() {
                 Log.e(LOGTAG, t.message)
             }
         })
+    }
+    private fun setAdapter()
+    {
+        if (JsonResponse == null){
+            loadJSON()
+        }
+        else {
+            mRecyclerView!!.adapter = mAdapter
+        }
     }
     private fun search(searchView: SearchView) {
 
@@ -101,5 +125,14 @@ class FragmentAndroidVersionInfo : Fragment() {
                 return true
             }
         })
+    }
+    private fun WriteJsonToFile(filename:String, json:JSONResponse){
+        var file = File(filename)
+
+        //Convert the Json object to JsonString
+        var jsonString:String = Gson().toJson(json)
+
+        Log.i(LOGTAG, jsonString)
+        //file.writeText(jsonString)
     }
 }

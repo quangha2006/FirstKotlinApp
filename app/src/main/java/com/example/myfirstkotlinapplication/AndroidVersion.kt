@@ -1,6 +1,6 @@
 package com.example.myfirstkotlinapplication
 
-public class AndroidVersion {
+class AndroidVersion {
     private val ver: String? = null
     private val name: String? = null
     private val api: String? = null

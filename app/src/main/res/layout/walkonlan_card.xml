@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        card_view:cardCornerRadius="5dp">
+    <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/start"
+            android:layout_gravity="right"
+            tools:ignore="RtlHardcoded">
+
+    </Button>
+    <LinearLayout
+            android:id="@+id/collum_first"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="5dp"
+            android:orientation="vertical">
+            <TextView
+                    android:id="@+id/tv_pc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="PC:"
+                    tools:ignore="RtlHardcoded">
+            </TextView>
+            <TextView
+                    android:id="@+id/tv_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/tv_pc"
+                    android:text="@string/ip">
+            </TextView>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/tv_ip"
+                    android:text="@string/mac">
+
+            </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/collum_second"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+
+            android:layout_marginStart="45dp"
+        android:orientation="vertical">
+    <TextView
+            android:id="@+id/tve_pc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QuangHa-PC"
+            android:textStyle="bold">
+    </TextView>
+    <TextView
+            android:id="@+id/tve_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="192.168.1.255">
+    </TextView>
+    <TextView
+            android:id="@+id/tve_mac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A8-5E-45-69-9C-D5">
+    </TextView>
+</LinearLayout>
+</android.support.v7.widget.CardView>
