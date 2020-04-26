@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
 import kotlinx.android.synthetic.main.walkonlan_card.view.*
+import kotlin.collections.ArrayList
 
 class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapter<WalkOnLanDataAdapter.ViewHolder>(), Filterable {
 
     private var mArrayList: ArrayList<Computer>? = arrayList
     private var mFilteredList: ArrayList<Computer>? = arrayList
-    private val LOGTAG = "QUANGHA"
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): WalkOnLanDataAdapter.ViewHolder {
         val view =
@@ -25,7 +26,7 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
 
             val macAddressWOL:String = view.tve_mac.text.toString()
 
-            Log.i(LOGTAG, "Call Walk On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
+            Log.i(LogTag, "Call Walk On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
 
             FragmentWalkOnLan.SendMagicPacket(ipAddressWOL, macAddressWOL).execute()
         }
@@ -33,9 +34,9 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(viewHolder: WalkOnLanDataAdapter.ViewHolder, i: Int) {
-        viewHolder.pcName.text = mFilteredList!![i].getPCName()
-        viewHolder.pcIp.text = mFilteredList!![i].getIPAddress()
-        viewHolder.pcMac.text = mFilteredList!![i].getMACAddress()
+        viewHolder.pcName.text = mFilteredList!![i].PCName
+        viewHolder.pcIp.text = mFilteredList!![i].IP
+        viewHolder.pcMac.text = mFilteredList!![i].Mac
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var pcName: TextView = view.findViewById(R.id.tve_pc)
@@ -49,30 +50,15 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
         return mFilteredList!!.size
     }
 
-    class JSONComputerList(){
+    class JSONComputerList(var PCList:ArrayList<Computer>?=null){
 
-        private var PCList:ArrayList<Computer>?=null
-
-        fun getComputerList(): ArrayList<Computer>? {
-            return PCList
+        fun add(computer:Computer){
+            PCList!!.add(computer)
         }
     }
-    class Computer {
-        private val mPCName: String? = null
-        private val mIP: String? = null
-        private val mMac: String? = null
-
-        fun getPCName(): String? {
-            return mPCName
-        }
-
-        fun getIPAddress(): String? {
-            return mIP
-        }
-
-        fun getMACAddress(): String? {
-            return mMac
-        }
+    data class Computer(var PCName: String? = null,
+                        var IP: String? = null,
+                        var Mac: String? = null) {
     }
 
 }

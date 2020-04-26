@@ -12,14 +12,12 @@ import android.view.ViewGroup
  */
 class FragmentDeviceInfo : Fragment() {
 
-    private val LOGTAG="QUANGHA"
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        Log.i(LOGTAG, "FragmentDeviceInfo onCreateView")
+//        Log.i(LogTag, "FragmentDeviceInfo onCreateView")
         return inflater.inflate(R.layout.fragment_device_info, container, false)
     }
 

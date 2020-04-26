@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
-    private var mArrayList: ArrayList<AndroidVersion> = arrayList
-    private var mFilteredList: ArrayList<AndroidVersion> = arrayList
+class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
+    private var mArrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
+    private var mFilteredList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
 
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
@@ -21,10 +23,10 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
 
     override fun onBindViewHolder(viewHolder: DataAdapter.ViewHolder, i: Int) {
 
-        viewHolder.tvname.text = (mFilteredList[i].getName())
-        viewHolder.tvversion.text = (mFilteredList[i].getVer())
-        viewHolder.tvapi_level.text = (mFilteredList[i].getApi())
-        viewHolder.tvrelease_date.text = (mFilteredList[i].getReleaseDate())
+        viewHolder.tvname.text = (mFilteredList[i].name)
+        viewHolder.tvversion.text = (mFilteredList[i].ver)
+        viewHolder.tvapilevel.text = (mFilteredList[i].api)
+        viewHolder.tvreleasedate.text = (mFilteredList[i].releasedate)
     }
 
     override fun getItemCount(): Int {
@@ -43,13 +45,15 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
                     mFilteredList = mArrayList
                 } else {
 
-                    val filteredList = ArrayList<AndroidVersion>()
+                    val filteredList = ArrayList<FragmentAndroidVersionInfo.AndroidVersion>()
 
                     for (androidVersion in mArrayList) {
 
-                        if (androidVersion.getApi()!!.toLowerCase().contains(charString) || androidVersion.getName()!!.toLowerCase().contains(
+                        if (androidVersion.api!!.toLowerCase(Locale.ROOT).contains(charString) || androidVersion.name!!.toLowerCase(
+                                Locale.ROOT
+                            ).contains(
                                 charString
-                            ) || androidVersion.getVer()!!.toLowerCase().contains(charString)
+                            ) || androidVersion.ver!!.toLowerCase(Locale.ROOT).contains(charString)
                         ) {
 
                             filteredList.add(androidVersion)
@@ -68,7 +72,7 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
                 charSequence: CharSequence,
                 filterResults: Filter.FilterResults
             ) {
-                mFilteredList = filterResults.values as ArrayList<AndroidVersion>
+                mFilteredList = filterResults.values as ArrayList<FragmentAndroidVersionInfo.AndroidVersion>
                 notifyDataSetChanged()
             }
         }
@@ -76,8 +80,8 @@ class DataAdapter(arrayList: ArrayList<AndroidVersion>) : RecyclerView.Adapter<D
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvname: TextView = view.findViewById(R.id.tv_name)
         val tvversion: TextView = view.findViewById(R.id.tv_version)
-        val tvapi_level: TextView = view.findViewById(R.id.tv_api_level)
-        val tvrelease_date : TextView = view.findViewById(R.id.tv_release_date)
+        val tvapilevel: TextView = view.findViewById(R.id.tv_api_level)
+        val tvreleasedate : TextView = view.findViewById(R.id.tv_release_date)
     }
 
 }

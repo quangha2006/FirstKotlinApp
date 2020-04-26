@@ -1,5 +1,7 @@
 package com.example.myfirstkotlinapplication
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
@@ -10,48 +12,79 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.fragment_walk_on_lan.view.*
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.*
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
-
+import kotlin.collections.ArrayList
 
 class FragmentWalkOnLan : Fragment() {
 
-    private val LOGTAG = "QUANGHA"
     private var mRecyclerView: RecyclerView? = null
     private var mDataAdapter : WalkOnLanDataAdapter?=null
     private lateinit var mContext: Context
     private lateinit var mView: View
-    private var JSONData: WalkOnLanDataAdapter.JSONComputerList? = null
+    private lateinit var mJsonData: WalkOnLanDataAdapter.JSONComputerList
 
-    public val jsonTest:String = "{\n" +
+    private val jsonTest:String = "{\n" +
             "    \"PCList\":[\n" +
             "        {\n" +
-            "            \"mPCName\": \"QUANGHA-PC\",\n" +
-            "            \"mIP\": \"192.168.0.255\",\n" +
-            "            \"mMac\": \"A8-5E-45-69-9C-D5\"\n" +
+            "            \"PCName\": \"QUANGHA-PC\",\n" +
+            "            \"IP\": \"192.168.0.255\",\n" +
+            "            \"Mac\": \"A8-5E-45-69-9C-D5\"\n" +
             "        }\n" +
             "    ]\n" +
             "}"
 
+    @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view:View = inflater.inflate(R.layout.fragment_walk_on_lan, container, false)
+
         mView = view
         mContext = container?.context!!
+        view.floatingActionButton.setOnClickListener()
+        {
+            //Inflate the dialog with custom view
+            val mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device,null)
+            //AlertDialogBuilder
+            val mBuilder = AlertDialog.Builder(mContext)
+                .setView(mDialogView)
+                .setTitle("Add Device Form")
+            //Show dialog
+            val mAlertDialog = mBuilder.show()
+            // Set button click of custom layout
+            mDialogView.dialogOKBtn.setOnClickListener(){
+
+                val pcName = mDialogView.etvPcName.text.toString()
+                val ip = mDialogView.etvIP.text.toString()
+                val mac = mDialogView.etvMac.text.toString()
+                val computer:WalkOnLanDataAdapter.Computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
+                // Need validate Data
+
+                // dismiss dialog
+                mAlertDialog.dismiss()
+                mJsonData.add(computer)
+                //Update Data
+            }
+            mDialogView.dialogCancelBtn.setOnClickListener(){
+                mAlertDialog.dismiss()
+            }
+        }
         initViews()
         return view
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val jsonData = Gson().fromJson(jsonTest, WalkOnLanDataAdapter.JSONComputerList::class.java)
-        mDataAdapter = WalkOnLanDataAdapter(ArrayList(jsonData.getComputerList()))
+        mJsonData = Gson().fromJson(jsonTest, WalkOnLanDataAdapter.JSONComputerList::class.java)
+        val computer:WalkOnLanDataAdapter.Computer = WalkOnLanDataAdapter.Computer("QUANGHA-IPAD", "192.168.0.255","A8-5E-45-69-9C-D6")
+        mJsonData.add(computer)
+        mDataAdapter = mJsonData.PCList?.let { WalkOnLanDataAdapter(it) }
     }
 
     private fun initViews() {
@@ -60,31 +93,29 @@ class FragmentWalkOnLan : Fragment() {
         mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
         mRecyclerView!!.adapter = mDataAdapter
     }
-    class SendMagicPacket(ipAddressWOL:String,macAddressWOL:String): AsyncTask<Void, Void, String>() {
-        private val LOGTAG = "QUANGHA"
-        val macAddress = macAddressWOL
-        val ipAddressWOL = ipAddressWOL
+    class SendMagicPacket(private val ipAddressWOL:String, private val macAddressWOL:String): AsyncTask<Void, Void, String>() {
+
         override fun doInBackground(vararg p0: Void?): String? {
         try {
             val port = 9
-            val macBytes = getMacBytes(macAddress)
+            val macBytes = getMacBytes(macAddressWOL)
             val bytes = ByteArray(6 + 16 * macBytes!!.size)
             for (i in 0..5) {
                 bytes[i] = 0xff.toByte()
             }
             var i = 6
             while (i < bytes.size) {
-                System.arraycopy(macBytes, 0, bytes, i, macBytes!!.size)
-                i += macBytes!!.size
+                System.arraycopy(macBytes, 0, bytes, i, macBytes.size)
+                i += macBytes.size
             }
             val address: InetAddress = InetAddress.getByName(ipAddressWOL)
             val packet = DatagramPacket(bytes, bytes.size, address, port)
             val socket = DatagramSocket()
             socket.send(packet)
             socket.close()
-            Log.i(LOGTAG, "Wake-on-LAN packet sent.")
+            Log.i(LogTag, "Wake-on-LAN packet sent.")
         } catch (e: Exception) {
-            Log.e(LOGTAG, "Failed to send Wake-on-LAN packet: $e")
+            Log.e(LogTag, "Failed to send Wake-on-LAN packet: $e")
         }
             return null
         }

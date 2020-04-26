@@ -6,9 +6,9 @@ import android.support.v7.widget.Toolbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    private val LOGTAG = "QUANGHA"
-
+    companion object {
+        var LogTag = "QUANGHA"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

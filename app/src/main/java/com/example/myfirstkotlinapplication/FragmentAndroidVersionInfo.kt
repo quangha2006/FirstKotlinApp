@@ -9,12 +9,14 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_android_version_info.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.GET
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
@@ -24,7 +26,6 @@ class FragmentAndroidVersionInfo : Fragment() {
     private lateinit var mArrayList: ArrayList<AndroidVersion>
     private var mAdapter: DataAdapter? = null
     private val BASE_URL = "http://qhcloud.ddns.net/"
-    private val LOGTAG = "QUANGHA"
     private var JsonResponse: JSONResponse? = null
     private lateinit var mView: View
     private lateinit var mContext: Context
@@ -36,9 +37,9 @@ class FragmentAndroidVersionInfo : Fragment() {
         setHasOptionsMenu(true)
         mView = inflater.inflate(R.layout.fragment_android_version_info, container, false)
         mContext = container?.context!!
-        if (container != null) {
-            initViews()
-        }
+
+        initViews()
+
         return mView
     }
 
@@ -81,24 +82,24 @@ class FragmentAndroidVersionInfo : Fragment() {
             override fun onResponse(call: Call<JSONResponse>, response: Response<JSONResponse>) {
                 if (response.isSuccessful) {
                     val timeResponse = response.raw().receivedResponseAtMillis() - response.raw().sentRequestAtMillis()
-                    Log.i(LOGTAG, "Request response time: " + timeResponse + "ms")
+                    Log.i(LogTag, "Request response time: " + timeResponse + "ms")
                     val myToast = Toast.makeText(
                         mContext,"Request response time: " + timeResponse + "ms",
                         Toast.LENGTH_LONG)
                     myToast.show()
 
                     JsonResponse = response.body()
-                    mArrayList = ArrayList(JsonResponse!!.getAndroid())
+                    mArrayList = ArrayList(JsonResponse!!.android)
                     mAdapter = DataAdapter(mArrayList)
-                    Log.i(LOGTAG, "File version: " + JsonResponse!!.getFileVersion())
+                    Log.i(LogTag, "File version: " + JsonResponse!!.version)
                     setAdapter()
                 } else {
-                    Log.e(LOGTAG, "Request URL: " + response.raw().request().url().toString() + " code: " + response.code())
+                    Log.e(LogTag, "Request URL: " + response.raw().request().url().toString() + " code: " + response.code())
                 }
             }
 
             override fun onFailure(call: Call<JSONResponse>, t: Throwable) {
-                Log.e(LOGTAG, t.message)
+                Log.e(LogTag, t.message)
             }
         })
     }
@@ -132,7 +133,22 @@ class FragmentAndroidVersionInfo : Fragment() {
         //Convert the Json object to JsonString
         var jsonString:String = Gson().toJson(json)
 
-        Log.i(LOGTAG, jsonString)
+        Log.i(LogTag, jsonString)
         //file.writeText(jsonString)
+    }
+    data class AndroidVersion (
+        var ver: String? = null,
+        var name: String? = null,
+        var api: String? = null,
+        var releasedate: String? = null){
+
+    }
+    data class JSONResponse(var version: Int? = null,
+                            var android: ArrayList<AndroidVersion>? = null) {
+
+    }
+    interface RequestInterface {
+        @GET("api/androidversion")
+        fun getJSON(): Call<JSONResponse>
     }
 }

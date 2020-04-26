@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter
 class MyPageAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position){
-            0 -> FragmentAndroidVersionInfo()
+            0 -> FragmentWalkOnLan()
             1 -> FragmentDeviceInfo()
-            2 -> FragmentWalkOnLan()
+            2 -> FragmentAndroidVersionInfo()
             else -> return FragmentWalkOnLan()
         }
 
@@ -22,9 +22,9 @@ class MyPageAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position)
         {
-            0 -> "AndroidVersionInfo"
+            0 -> "WalkOnLan"
             1 -> "DeviceInfo"
-            2 -> "WalkOnLan"
+            2 -> "AndroidVersionInfo"
             else -> return "unknow"
         }
         //return super.getPageTitle(position)
