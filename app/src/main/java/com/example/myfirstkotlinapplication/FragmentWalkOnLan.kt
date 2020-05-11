@@ -16,6 +16,7 @@ import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_walk_on_lan.view.*
 import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.*
+import java.io.File
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
@@ -27,17 +28,17 @@ class FragmentWalkOnLan : Fragment() {
     private var mDataAdapter : WalkOnLanDataAdapter?=null
     private lateinit var mContext: Context
     private lateinit var mView: View
-    private lateinit var mJsonData: WalkOnLanDataAdapter.JSONComputerList
-
-    private val jsonTest:String = "{\n" +
-            "    \"PCList\":[\n" +
-            "        {\n" +
-            "            \"PCName\": \"QUANGHA-PC\",\n" +
-            "            \"IP\": \"192.168.0.255\",\n" +
-            "            \"Mac\": \"A8-5E-45-69-9C-D5\"\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}"
+    private var mJsonData: WalkOnLanDataAdapter.JSONComputerList?=null
+    private val mDataPath:String = "/PCList.json"
+//    private var jsonTest:String = "{\n" +
+//            "    \"PCList\":[\n" +
+//            "        {\n" +
+//            "            \"PCName\": \"QUANGHA-PC\",\n" +
+//            "            \"IP\": \"192.168.0.255\",\n" +
+//            "            \"Mac\": \"A8-5E-45-69-9C-D5\"\n" +
+//            "        }\n" +
+//            "    ]\n" +
+//            "}"
 
     @SuppressLint("InflateParams")
     override fun onCreateView(
@@ -48,6 +49,8 @@ class FragmentWalkOnLan : Fragment() {
 
         mView = view
         mContext = container?.context!!
+        initViews()
+
         view.floatingActionButton.setOnClickListener()
         {
             //Inflate the dialog with custom view
@@ -69,22 +72,44 @@ class FragmentWalkOnLan : Fragment() {
 
                 // dismiss dialog
                 mAlertDialog.dismiss()
-                mJsonData.add(computer)
+                if (mJsonData == null) {
+                    val json:String = "{\n" +
+                            "    \"PCList\":[\n" +
+                            "        {\n" +
+                            "            \"PCName\": \"$pcName\",\n" +
+                            "            \"IP\": \"$ip\",\n" +
+                            "            \"Mac\": \"$mac\"\n" +
+                            "        }\n" +
+                            "    ]\n" +
+                            "}"
+                    mJsonData = Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
+                    mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
+                    mRecyclerView!!.adapter = mDataAdapter
+                } else
+                    mJsonData?.add(computer)
                 //Update Data
+                val newData = Gson().toJson(mJsonData).toString()
+                val file = File(mContext.filesDir.absolutePath + mDataPath)
+                file.writeText(newData)
             }
             mDialogView.dialogCancelBtn.setOnClickListener(){
                 mAlertDialog.dismiss()
             }
         }
-        initViews()
+
         return view
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mJsonData = Gson().fromJson(jsonTest, WalkOnLanDataAdapter.JSONComputerList::class.java)
-        val computer:WalkOnLanDataAdapter.Computer = WalkOnLanDataAdapter.Computer("QUANGHA-IPAD", "192.168.0.255","A8-5E-45-69-9C-D6")
-        mJsonData.add(computer)
-        mDataAdapter = mJsonData.PCList?.let { WalkOnLanDataAdapter(it) }
+        val dataPath : String = activity?.applicationContext!!.filesDir.absolutePath + mDataPath
+        Log.i(LogTag, "DataPath: $dataPath")
+        val file = File(dataPath.toString())
+        if (file.exists())
+        {
+            val json : String = file.readText()
+            mJsonData = Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
+            mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
+        }
     }
 
     private fun initViews() {

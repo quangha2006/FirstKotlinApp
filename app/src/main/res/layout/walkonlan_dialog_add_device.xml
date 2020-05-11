@@ -9,19 +9,19 @@
     <EditText
             android:id="@+id/etvPcName"
             android:hint="Enter PC Name"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     <EditText
             android:id="@+id/etvIP"
             android:hint="Enter IP Broadcast"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     <EditText
             android:id="@+id/etvMac"
             android:hint="Enter Mac Address"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
