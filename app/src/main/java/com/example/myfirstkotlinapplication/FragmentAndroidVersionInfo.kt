@@ -3,6 +3,7 @@ package com.example.myfirstkotlinapplication
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -16,8 +17,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import java.io.File
 
 class FragmentAndroidVersionInfo : Fragment() {
@@ -25,8 +26,8 @@ class FragmentAndroidVersionInfo : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mArrayList: ArrayList<AndroidVersion>
     private var mAdapter: DataAdapter? = null
-    private val BASE_URL = "http://qhcloud.ddns.net/"
-    private var JsonResponse: JSONResponse? = null
+    private val mBASE_URL = "http://qhcloud.ddns.net/"
+    private var mJsonResponse: JSONResponse? = null
     private lateinit var mView: View
     private lateinit var mContext: Context
 
@@ -68,12 +69,18 @@ class FragmentAndroidVersionInfo : Fragment() {
     private fun initViews() {
         mRecyclerView = mView.card_recycler_view
         mRecyclerView!!.setHasFixedSize(true)
+        mRecyclerView!!.addItemDecoration(
+            DividerItemDecoration(
+                mContext,
+                LinearLayoutManager.VERTICAL
+            )
+        )
         mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
     }
 
     private fun loadJSON() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(mBASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val request = retrofit.create(RequestInterface::class.java)
@@ -88,10 +95,10 @@ class FragmentAndroidVersionInfo : Fragment() {
                         Toast.LENGTH_LONG)
                     myToast.show()
 
-                    JsonResponse = response.body()
-                    mArrayList = ArrayList(JsonResponse!!.android)
+                    mJsonResponse = response.body()
+                    mArrayList = ArrayList(mJsonResponse!!.android)
                     mAdapter = DataAdapter(mArrayList)
-                    Log.i(LogTag, "File version: " + JsonResponse!!.version)
+                    Log.i(LogTag, "File version: " + mJsonResponse!!.version)
                     setAdapter()
                 } else {
                     Log.e(LogTag, "Request URL: " + response.raw().request().url().toString() + " code: " + response.code())
@@ -105,7 +112,7 @@ class FragmentAndroidVersionInfo : Fragment() {
     }
     private fun setAdapter()
     {
-        if (JsonResponse == null){
+        if (mJsonResponse == null){
             loadJSON()
         }
         else {

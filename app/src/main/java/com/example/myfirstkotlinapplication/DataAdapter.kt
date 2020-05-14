@@ -1,11 +1,18 @@
 package com.example.myfirstkotlinapplication
+
+import android.R
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import android.widget.TextView
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,6 +34,13 @@ class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion
         viewHolder.tvversion.text = (mFilteredList[i].ver)
         viewHolder.tvapilevel.text = (mFilteredList[i].api)
         viewHolder.tvreleasedate.text = (mFilteredList[i].releasedate)
+        val file = File("/sdcard/Images/mypicture.png")
+        if (file.exists()){
+            var myBitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            viewHolder.imageView.setImageBitmap(myBitmap)
+            val drawable = AppCompatResources.getDrawable(this, R.drawable.)
+            viewHolder.imageView.setImageDrawable()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -82,6 +96,7 @@ class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion
         val tvversion: TextView = view.findViewById(R.id.tv_version)
         val tvapilevel: TextView = view.findViewById(R.id.tv_api_level)
         val tvreleasedate : TextView = view.findViewById(R.id.tv_release_date)
+        val imageView : ImageView = view.findViewById(R.id.imageView)
     }
 
 }
