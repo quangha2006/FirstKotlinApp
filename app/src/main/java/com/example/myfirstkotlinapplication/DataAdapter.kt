@@ -1,8 +1,9 @@
 package com.example.myfirstkotlinapplication
 
-import android.R
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -12,19 +13,20 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
-import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-
+import java.io.IOException;
+import java.io.InputStream;
 
 class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
     private var mArrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
     private var mFilteredList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
-
+    private lateinit var mContext: Context
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
         val view =
             LayoutInflater.from(viewGroup.context).inflate(R.layout.card_row, viewGroup, false)
+        mContext = viewGroup.context
         return ViewHolder(view)
     }
 
@@ -34,12 +36,23 @@ class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion
         viewHolder.tvversion.text = (mFilteredList[i].ver)
         viewHolder.tvapilevel.text = (mFilteredList[i].api)
         viewHolder.tvreleasedate.text = (mFilteredList[i].releasedate)
-        val file = File("/sdcard/Images/mypicture.png")
-        if (file.exists()){
-            var myBitmap : Bitmap = BitmapFactory.decodeFile(file.absolutePath)
-            viewHolder.imageView.setImageBitmap(myBitmap)
-            val drawable = AppCompatResources.getDrawable(this, R.drawable.)
-            viewHolder.imageView.setImageDrawable()
+        var assertPath = "androidversion/android_o.jpg"
+        if (mFilteredList[i].name.equals("Marshmallow"))
+            assertPath = "androidversion/android_m.jpg"
+        if (mFilteredList[i].name.equals("Nougat"))
+            assertPath = "androidversion/android_n.jpg"
+        if (mFilteredList[i].name.equals("Lollipop"))
+            assertPath = "androidversion/android_l.jpg"
+        if (mFilteredList[i].name.equals("Pie"))
+            assertPath = "androidversion/android_p.jpg"
+        if (mFilteredList[i].name.equals("Android 10"))
+            assertPath = "androidversion/android_10.jpg"
+        try {
+            val ims : InputStream = mContext.assets.open(assertPath);
+            val drawable =  Drawable.createFromStream(ims, null);
+            viewHolder.imageView.setImageDrawable(drawable)
+        }catch(e:IOException){
+            e.printStackTrace()
         }
     }
 
