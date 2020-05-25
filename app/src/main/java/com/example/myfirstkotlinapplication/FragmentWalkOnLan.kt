@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,18 +58,18 @@ class FragmentWalkOnLan : Fragment() {
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(mContext)
                 .setView(mDialogView)
-                .setTitle("Add Device Form")
+                //.setTitle("Add Device Form")
+
             //Show dialog
             val mAlertDialog = mBuilder.show()
             // Set button click of custom layout
             mDialogView.dialogOKBtn.setOnClickListener(){
 
                 val pcName = mDialogView.etvPcName.text.toString()
-                val ip = mDialogView.etvIP.text.toString()
-                val mac = mDialogView.etvMac.text.toString()
+                val ip = mDialogView.etvIP1.text.toString() + '.' + mDialogView.etvIP2.text.toString() + '.' + mDialogView.etvIP3.text.toString() + '.' + mDialogView.etvIP4.text.toString()
+                val mac = mDialogView.etvMac1.text.toString() + ':' + mDialogView.etvMac2.text.toString() + ':' + mDialogView.etvMac3.text.toString() + ':' + mDialogView.etvMac4.text.toString() + ':' + mDialogView.etvMac5.text.toString() + ':' + mDialogView.etvMac6.text.toString()
                 val computer:WalkOnLanDataAdapter.Computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
                 // Need validate Data
-
                 // dismiss dialog
                 mAlertDialog.dismiss()
                 if (mJsonData == null) {

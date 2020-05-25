@@ -6,25 +6,179 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-    <EditText
-            android:id="@+id/etvPcName"
-            android:hint="Enter PC Name"
-            android:inputType="text"
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:text="Add Device Form"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    <EditText
-            android:id="@+id/etvIP"
-            android:hint="Enter IP Broadcast"
-            android:inputType="text"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PC Name:       "/>
+        <EditText
+                android:id="@+id/etvPcName"
+                android:hint="Enter PC Name"
+                android:maxLength="30"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/etvIP1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    <EditText
-            android:id="@+id/etvMac"
-            android:hint="Enter Mac Address"
-            android:inputType="text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IP Broadcast:"/>
+        <EditText
+                android:id="@+id/etvIP1"
+                android:hint="192"
+                android:inputType="number"
+                android:maxLength="3"
+                android:gravity="center"
+                android:nextFocusRight="@+id/etvMac2"
+                android:imeOptions="actionNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="."/>
+        <EditText
+                android:id="@+id/etvIP2"
+                android:hint="168"
+                android:inputType="number"
+                android:maxLength="3"
+                android:gravity="center"
+                android:nextFocusRight="@+id/etvIP3"
+                android:imeOptions="actionNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="."/>
+        <EditText
+                android:id="@+id/etvIP3"
+                android:hint="255"
+                android:inputType="number"
+                android:maxLength="3"
+                android:gravity="center"
+                android:nextFocusRight="@+id/etvIP4"
+                android:imeOptions="actionNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="."/>
+        <EditText
+                android:id="@+id/etvIP4"
+                android:hint="255"
+                android:inputType="number"
+                android:maxLength="3"
+                android:gravity="center"
+                android:nextFocusDown="@+id/etvMac1"
+                android:imeOptions="actionNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="left">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mac Address:"/>
+        <EditText
+                android:id="@+id/etvMac1"
+                android:hint="D1"
+                android:maxLength="2"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/etvMac2"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
+        <EditText
+                android:id="@+id/etvMac2"
+                android:hint="D2"
+                android:maxLength="2"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/etvMac3"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
+        <EditText
+                android:id="@+id/etvMac3"
+                android:hint="D3"
+                android:maxLength="2"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/etvMac4"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
+        <EditText
+                android:id="@+id/etvMac4"
+                android:hint="D4"
+                android:maxLength="2"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/etvMac5"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
+        <EditText
+                android:id="@+id/etvMac5"
+                android:hint="D5"
+                android:maxLength="2"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@+id/etvMac6"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"/>
+        <EditText
+                android:id="@+id/etvMac6"
+                android:hint="D6"
+                android:maxLength="2"
+                android:inputType="textCapCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
