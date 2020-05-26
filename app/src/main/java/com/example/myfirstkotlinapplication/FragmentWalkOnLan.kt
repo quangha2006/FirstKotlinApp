@@ -24,11 +24,11 @@ import java.net.InetAddress
 
 class FragmentWalkOnLan : Fragment() {
 
-    private var mRecyclerView: RecyclerView? = null
-    private var mDataAdapter : WalkOnLanDataAdapter?=null
+    private var mRecyclerView: RecyclerView ?= null
+    private var mDataAdapter : WalkOnLanDataAdapter ?= null
     private lateinit var mContext: Context
     private lateinit var mView: View
-    private var mJsonData: WalkOnLanDataAdapter.JSONComputerList?=null
+    private var mJsonData : WalkOnLanDataAdapter.JSONComputerList ?= null
     private val mDataPath:String = "/PCList.json"
 //    private var jsonTest:String = "{\n" +
 //            "    \"PCList\":[\n" +
@@ -58,7 +58,6 @@ class FragmentWalkOnLan : Fragment() {
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(mContext)
                 .setView(mDialogView)
-                //.setTitle("Add Device Form")
 
             //Show dialog
             val mAlertDialog = mBuilder.show()
@@ -68,25 +67,12 @@ class FragmentWalkOnLan : Fragment() {
                 val pcName = mDialogView.etvPcName.text.toString()
                 val ip = mDialogView.etvIP1.text.toString() + '.' + mDialogView.etvIP2.text.toString() + '.' + mDialogView.etvIP3.text.toString() + '.' + mDialogView.etvIP4.text.toString()
                 val mac = mDialogView.etvMac1.text.toString() + ':' + mDialogView.etvMac2.text.toString() + ':' + mDialogView.etvMac3.text.toString() + ':' + mDialogView.etvMac4.text.toString() + ':' + mDialogView.etvMac5.text.toString() + ':' + mDialogView.etvMac6.text.toString()
-                val computer:WalkOnLanDataAdapter.Computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
+                val computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
                 // Need validate Data
                 // dismiss dialog
                 mAlertDialog.dismiss()
-                if (mJsonData == null) {
-                    val json:String = "{\n" +
-                            "    \"PCList\":[\n" +
-                            "        {\n" +
-                            "            \"PCName\": \"$pcName\",\n" +
-                            "            \"IP\": \"$ip\",\n" +
-                            "            \"Mac\": \"$mac\"\n" +
-                            "        }\n" +
-                            "    ]\n" +
-                            "}"
-                    mJsonData = Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
-                    mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
-                    mRecyclerView!!.adapter = mDataAdapter
-                } else
-                    mJsonData?.add(computer)
+
+                mJsonData!!.add(computer)
                 //Update Data
                 val newData = Gson().toJson(mJsonData).toString()
                 val file = File(mContext.filesDir.absolutePath + mDataPath)
@@ -104,12 +90,13 @@ class FragmentWalkOnLan : Fragment() {
         val dataPath : String = activity?.applicationContext!!.filesDir.absolutePath + mDataPath
         Log.i(LogTag, "DataPath: $dataPath")
         val file = File(dataPath.toString())
-        if (file.exists())
-        {
+        mJsonData = if (file.exists()) {
             val json : String = file.readText()
-            mJsonData = Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
-            mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
+            Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
+        } else {
+            WalkOnLanDataAdapter.JSONComputerList(arrayListOf<WalkOnLanDataAdapter.Computer>())
         }
+        mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
     }
 
     private fun initViews() {

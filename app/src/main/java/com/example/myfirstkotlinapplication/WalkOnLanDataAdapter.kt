@@ -9,6 +9,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.walkonlan_card.view.*
 import kotlin.collections.ArrayList
 
@@ -55,10 +56,9 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
         fun add(computer:Computer){
             PCList!!.add(computer)
         }
+
     }
-    data class Computer(var PCName: String? = null,
-                        var IP: String? = null,
-                        var Mac: String? = null) {
+    data class Computer(var PCName: String, var IP: String, var Mac: String) {
     }
 
 }

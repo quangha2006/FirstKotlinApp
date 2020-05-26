@@ -27,7 +27,7 @@
         <EditText
                 android:id="@+id/etvPcName"
                 android:hint="Enter PC Name"
-                android:maxLength="30"
+                android:maxLength="25"
                 android:inputType="text"
                 android:imeOptions="actionNext"
                 android:nextFocusDown="@+id/etvIP1"

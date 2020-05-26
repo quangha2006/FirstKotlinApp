@@ -26,7 +26,7 @@ class FragmentAndroidVersionInfo : Fragment() {
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mArrayList: ArrayList<AndroidVersion>
     private var mAdapter: DataAdapter? = null
-    private val mBASE_URL = "http://qhcloud.ddns.net/"
+    private val mBASEURL = "http://qhcloud.ddns.net/"
     private var mJsonResponse: JSONResponse? = null
     private lateinit var mView: View
     private lateinit var mContext: Context
@@ -80,7 +80,7 @@ class FragmentAndroidVersionInfo : Fragment() {
 
     private fun loadJSON() {
         val retrofit = Retrofit.Builder()
-            .baseUrl(mBASE_URL)
+            .baseUrl(mBASEURL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val request = retrofit.create(RequestInterface::class.java)
