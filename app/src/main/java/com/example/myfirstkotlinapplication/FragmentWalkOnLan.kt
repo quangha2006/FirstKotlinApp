@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +24,7 @@ import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
 
+
 class FragmentWalkOnLan : Fragment() {
 
     private var mRecyclerView: RecyclerView ?= null
@@ -30,31 +33,24 @@ class FragmentWalkOnLan : Fragment() {
     private lateinit var mView: View
     private var mJsonData : WalkOnLanDataAdapter.JSONComputerList ?= null
     private val mDataPath:String = "/PCList.json"
-//    private var jsonTest:String = "{\n" +
-//            "    \"PCList\":[\n" +
-//            "        {\n" +
-//            "            \"PCName\": \"QUANGHA-PC\",\n" +
-//            "            \"IP\": \"192.168.0.255\",\n" +
-//            "            \"Mac\": \"A8-5E-45-69-9C-D5\"\n" +
-//            "        }\n" +
-//            "    ]\n" +
-//            "}"
+    private var mDialogView : View ?= null
 
     @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view:View = inflater.inflate(R.layout.fragment_walk_on_lan, container, false)
+        //val view:View =
 
-        mView = view
+        mView = inflater.inflate(R.layout.fragment_walk_on_lan, container, false)
         mContext = container?.context!!
         initViews()
+        //Inflate the dialog with custom view
+        mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device,null)
 
-        view.floatingActionButton.setOnClickListener()
+        mView.floatingActionButton.setOnClickListener()
         {
-            //Inflate the dialog with custom view
-            val mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device,null)
+
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(mContext)
                 .setView(mDialogView)
@@ -62,11 +58,11 @@ class FragmentWalkOnLan : Fragment() {
             //Show dialog
             val mAlertDialog = mBuilder.show()
             // Set button click of custom layout
-            mDialogView.dialogOKBtn.setOnClickListener(){
+            mDialogView!!.dialogOKBtn.setOnClickListener(){
 
-                val pcName = mDialogView.etvPcName.text.toString()
-                val ip = mDialogView.etvIP1.text.toString() + '.' + mDialogView.etvIP2.text.toString() + '.' + mDialogView.etvIP3.text.toString() + '.' + mDialogView.etvIP4.text.toString()
-                val mac = mDialogView.etvMac1.text.toString() + ':' + mDialogView.etvMac2.text.toString() + ':' + mDialogView.etvMac3.text.toString() + ':' + mDialogView.etvMac4.text.toString() + ':' + mDialogView.etvMac5.text.toString() + ':' + mDialogView.etvMac6.text.toString()
+                val pcName = mDialogView!!.etvPcName.text.toString()
+                val ip = mDialogView!!.etvIP1.text.toString() + '.' + mDialogView!!.etvIP2.text.toString() + '.' + mDialogView!!.etvIP3.text.toString() + '.' + mDialogView!!.etvIP4.text.toString()
+                val mac = mDialogView!!.etvMac1.text.toString() + ':' + mDialogView!!.etvMac2.text.toString() + ':' + mDialogView!!.etvMac3.text.toString() + ':' + mDialogView!!.etvMac4.text.toString() + ':' + mDialogView!!.etvMac5.text.toString() + ':' + mDialogView!!.etvMac6.text.toString()
                 val computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
                 // Need validate Data
                 // dismiss dialog
@@ -78,12 +74,14 @@ class FragmentWalkOnLan : Fragment() {
                 val file = File(mContext.filesDir.absolutePath + mDataPath)
                 file.writeText(newData)
             }
-            mDialogView.dialogCancelBtn.setOnClickListener(){
+            mDialogView!!.dialogCancelBtn.setOnClickListener(){
                 mAlertDialog.dismiss()
             }
         }
 
-        return view
+        setUpTextChange()
+
+        return mView
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +102,135 @@ class FragmentWalkOnLan : Fragment() {
         mRecyclerView!!.setHasFixedSize(true)
         mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
         mRecyclerView!!.adapter = mDataAdapter
+    }
+    private fun setUpTextChange(){
+        mDialogView!!.etvIP1.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 3){
+                    mDialogView!!.etvIP2.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvIP2.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 3){
+                    mDialogView!!.etvIP3.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvIP3.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 3){
+                    mDialogView!!.etvIP4.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvIP4.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 3){
+                    mDialogView!!.etvMac1.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvMac1.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 2){
+                    mDialogView!!.etvMac2.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvMac2.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 2){
+                    mDialogView!!.etvMac3.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvMac3.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 2){
+                    mDialogView!!.etvMac4.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvMac4.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 2){
+                    mDialogView!!.etvMac5.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        mDialogView!!.etvMac5.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0?.length == 2){
+                    mDialogView!!.etvMac6.requestFocus()
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
     }
     class SendMagicPacket(private val ipAddressWOL:String, private val macAddressWOL:String): AsyncTask<Void, Void, String>() {
 
