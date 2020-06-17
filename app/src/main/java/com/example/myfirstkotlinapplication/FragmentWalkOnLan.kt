@@ -225,6 +225,7 @@ class FragmentWalkOnLan : Fragment() {
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -233,7 +234,7 @@ class FragmentWalkOnLan : Fragment() {
         })
         mDialogView!!.etvMac5.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             //Log.i(LogTag, "p0 = $p0 p1 = $p1 p2 = $p2 p3 = $p3")
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_UP && p1 == 0) {
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_UP && mDialogView!!.etvMac5.text.isEmpty()) {
                 mDialogView!!.etvMac4.requestFocus()
                 return@OnKeyListener true
             }
