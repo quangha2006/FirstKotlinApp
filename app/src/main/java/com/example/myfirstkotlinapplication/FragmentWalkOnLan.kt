@@ -34,29 +34,34 @@ class FragmentWalkOnLan : Fragment() {
     private var mJsonData : WalkOnLanDataAdapter.JSONComputerList ?= null
     private val mDataPath:String = "/PCList.json"
     private var mDialogView : View ?= null
-
     @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //val view:View =
 
         mView = inflater.inflate(R.layout.fragment_walk_on_lan, container, false)
         mContext = container?.context!!
         initViews()
+
         //Inflate the dialog with custom view
-        mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device,null)
+        //mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device, container,false)
+        mDialogView = inflater.inflate(R.layout.walkonlan_dialog_add_device, container,false)
+        setUpTextChange()
+
+      //  val builder = AlertDialog.Builder(mContext)
+           // .setView(mDialogView)
 
         mView.floatingActionButton.setOnClickListener()
         {
-
             //AlertDialogBuilder
-            val mBuilder = AlertDialog.Builder(mContext)
+
+            val builder = AlertDialog.Builder(mContext)
                 .setView(mDialogView)
 
             //Show dialog
-            val mAlertDialog = mBuilder.show()
+            val mAlertDialog = builder!!.show()
+
             // Set button click of custom layout
             mDialogView!!.dialogOKBtn.setOnClickListener(){
 
@@ -67,6 +72,7 @@ class FragmentWalkOnLan : Fragment() {
                 // Need validate Data
                 // dismiss dialog
                 mAlertDialog.dismiss()
+                builder.setView(null)
 
                 mJsonData!!.add(computer)
                 //Update Data
@@ -76,11 +82,9 @@ class FragmentWalkOnLan : Fragment() {
             }
             mDialogView!!.dialogCancelBtn.setOnClickListener(){
                 mAlertDialog.dismiss()
+                builder.setView(null)
             }
         }
-
-        setUpTextChange()
-
         return mView
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,6 +99,7 @@ class FragmentWalkOnLan : Fragment() {
             WalkOnLanDataAdapter.JSONComputerList(arrayListOf<WalkOnLanDataAdapter.Computer>())
         }
         mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
+
     }
 
     private fun initViews() {
@@ -109,14 +114,9 @@ class FragmentWalkOnLan : Fragment() {
                 if (p0?.length == 3){
                     mDialogView!!.etvIP2.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvIP2.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -125,117 +125,131 @@ class FragmentWalkOnLan : Fragment() {
                 }
 
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvIP3.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
                     mDialogView!!.etvIP4.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvIP4.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
                     mDialogView!!.etvMac1.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvMac1.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
                     mDialogView!!.etvMac2.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvMac2.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
                     mDialogView!!.etvMac3.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvMac3.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
                     mDialogView!!.etvMac4.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvMac4.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
                     mDialogView!!.etvMac5.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
         mDialogView!!.etvMac5.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
                     mDialogView!!.etvMac6.requestFocus()
                 }
-
             }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
+        mDialogView!!.etvIP2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP2.text.isEmpty()) {
+                mDialogView!!.etvIP1.requestFocus()
+                return@OnKeyListener true
             }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            false
+        })
+        mDialogView!!.etvIP3.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP3.text.isEmpty()) {
+                mDialogView!!.etvIP2.requestFocus()
+                return@OnKeyListener true
             }
+            false
+        })
+        mDialogView!!.etvIP4.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP4.text.isEmpty()) {
+                mDialogView!!.etvIP3.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+        mDialogView!!.etvIP2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP2.text.isEmpty()) {
+                mDialogView!!.etvIP1.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+        mDialogView!!.etvMac2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac2.text.isEmpty()) {
+                mDialogView!!.etvMac1.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+        mDialogView!!.etvMac3.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac3.text.isEmpty()) {
+                mDialogView!!.etvMac2.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+        mDialogView!!.etvMac4.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac4.text.isEmpty()) {
+                mDialogView!!.etvMac3.requestFocus()
+                return@OnKeyListener true
+            }
+            false
         })
         mDialogView!!.etvMac5.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            //Log.i(LogTag, "p0 = $p0 p1 = $p1 p2 = $p2 p3 = $p3")
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_UP && mDialogView!!.etvMac5.text.isEmpty()) {
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac5.text.isEmpty()) {
                 mDialogView!!.etvMac4.requestFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
+        mDialogView!!.etvMac6.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac6.text.isEmpty()) {
+                mDialogView!!.etvMac5.requestFocus()
                 return@OnKeyListener true
             }
             false
