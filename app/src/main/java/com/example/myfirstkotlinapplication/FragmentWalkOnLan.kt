@@ -45,9 +45,9 @@ class FragmentWalkOnLan : Fragment() {
         initViews()
 
         //Inflate the dialog with custom view
-        //mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device, container,false)
-        mDialogView = inflater.inflate(R.layout.walkonlan_dialog_add_device, container,false)
-        setUpTextChange()
+        mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device, null,false)
+        //mDialogView = inflater.inflate(R.layout.walkonlan_dialog_add_device, container,false)
+
 
       //  val builder = AlertDialog.Builder(mContext)
            // .setView(mDialogView)
@@ -72,7 +72,6 @@ class FragmentWalkOnLan : Fragment() {
                 // Need validate Data
                 // dismiss dialog
                 mAlertDialog.dismiss()
-                builder.setView(null)
 
                 mJsonData!!.add(computer)
                 //Update Data
@@ -82,9 +81,9 @@ class FragmentWalkOnLan : Fragment() {
             }
             mDialogView!!.dialogCancelBtn.setOnClickListener(){
                 mAlertDialog.dismiss()
-                builder.setView(null)
             }
         }
+        setUpTextChange()
         return mView
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,13 +207,6 @@ class FragmentWalkOnLan : Fragment() {
         mDialogView!!.etvIP4.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP4.text.isEmpty()) {
                 mDialogView!!.etvIP3.requestFocus()
-                return@OnKeyListener true
-            }
-            false
-        })
-        mDialogView!!.etvIP2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP2.text.isEmpty()) {
-                mDialogView!!.etvIP1.requestFocus()
                 return@OnKeyListener true
             }
             false
