@@ -46,11 +46,8 @@ class FragmentWalkOnLan : Fragment() {
 
         //Inflate the dialog with custom view
         mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device, null,false)
+        // Same as below ????????
         //mDialogView = inflater.inflate(R.layout.walkonlan_dialog_add_device, container,false)
-
-
-      //  val builder = AlertDialog.Builder(mContext)
-           // .setView(mDialogView)
 
         mView.floatingActionButton.setOnClickListener()
         {

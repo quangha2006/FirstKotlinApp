@@ -8,8 +8,8 @@ class MyPageAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         return when (position){
             0 -> FragmentWalkOnLan()
-            1 -> FragmentDeviceInfo()
-            2 -> FragmentAndroidVersionInfo()
+            1 -> FragmentAndroidVersionInfo()
+            2 -> FragmentDeviceInfo()
             else -> return FragmentWalkOnLan()
         }
 
@@ -23,8 +23,8 @@ class MyPageAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
         return when (position)
         {
             0 -> "WalkOnLan"
-            1 -> "DeviceInfo"
-            2 -> "AndroidVersionInfo"
+            1 -> "AndroidVersionInfo"
+            2 -> "DeviceInfo"
             else -> return "unknow"
         }
         //return super.getPageTitle(position)
