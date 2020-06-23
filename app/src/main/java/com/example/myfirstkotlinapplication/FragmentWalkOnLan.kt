@@ -15,10 +15,27 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
 import com.google.gson.Gson
+
 import kotlinx.android.synthetic.main.fragment_walk_on_lan.view.*
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.*
 import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.*
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.dialogCancelBtn
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.dialogOKBtn
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP1
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP2
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP3
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP4
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac1
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac2
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac3
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac4
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac5
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac6
+import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvPcName
+
 import java.io.File
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -34,7 +51,7 @@ class FragmentWalkOnLan : Fragment() {
     private var mJsonData : WalkOnLanDataAdapter.JSONComputerList ?= null
     private val mDataPath:String = "/PCList.json"
     private var mDialogView : View ?= null
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "StringFormatInvalid")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +69,6 @@ class FragmentWalkOnLan : Fragment() {
         mView.floatingActionButton.setOnClickListener()
         {
             //AlertDialogBuilder
-
             val builder = AlertDialog.Builder(mContext)
                 .setView(mDialogView)
 
@@ -60,23 +76,37 @@ class FragmentWalkOnLan : Fragment() {
             val mAlertDialog = builder!!.show()
 
             // Set button click of custom layout
-            mDialogView!!.dialogOKBtn.setOnClickListener(){
+            dialogOKBtn?.setOnClickListener(){
 
-                val pcName = mDialogView!!.etvPcName.text.toString()
-                val ip = mDialogView!!.etvIP1.text.toString() + '.' + mDialogView!!.etvIP2.text.toString() + '.' + mDialogView!!.etvIP3.text.toString() + '.' + mDialogView!!.etvIP4.text.toString()
-                val mac = mDialogView!!.etvMac1.text.toString() + ':' + mDialogView!!.etvMac2.text.toString() + ':' + mDialogView!!.etvMac3.text.toString() + ':' + mDialogView!!.etvMac4.text.toString() + ':' + mDialogView!!.etvMac5.text.toString() + ':' + mDialogView!!.etvMac6.text.toString()
-                val computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
-                // Need validate Data
-                // dismiss dialog
-                mAlertDialog.dismiss()
+                val ip = getString(
+                    R.string.ip_value,
+                    etvIP1?.getInput(),
+                    etvIP2?.getInput(),
+                    etvIP3?.getInput(),
+                    etvIP4?.getInput()
+                ) //mDialogView!!.etvIP1.text.toString() + '.' + mDialogView!!.etvIP2.text.toString() + '.' + mDialogView!!.etvIP3.text.toString() + '.' + mDialogView!!.etvIP4.text.toString()
+                val mac = getString(
+                    R.string.mac_value,
+                    etvMac1?.getInput(),
+                    etvMac2?.getInput(),
+                    etvMac3?.getInput(),
+                    etvMac4?.getInput(),
+                    etvMac5?.getInput(),
+                    etvMac6?.getInput()
+                )//mDialogView!!.etvMac1.text.toString() + ':' + mDialogView!!.etvMac2.text.toString() + ':' + mDialogView!!.etvMac3.text.toString() + ':' + mDialogView!!.etvMac4.text.toString() + ':' + mDialogView!!.etvMac5.text.toString() + ':' + mDialogView!!.etvMac6.text.toString()
 
-                mJsonData!!.add(computer)
-                //Update Data
-                val newData = Gson().toJson(mJsonData).toString()
-                val file = File(mContext.filesDir.absolutePath + mDataPath)
-                file.writeText(newData)
+                etvPcName?.getInput()?.let {pcName ->
+                    val computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
+                    mAlertDialog.dismiss()
+                    mJsonData?.add(computer)
+                    val file = File(mContext.filesDir.absolutePath + mDataPath)
+                    Gson().toJson(mJsonData)?.let {data->
+                        file.writeText(data)
+                    }
+                }
+
             }
-            mDialogView!!.dialogCancelBtn.setOnClickListener(){
+           dialogCancelBtn?.setOnClickListener(){
                 mAlertDialog.dismiss()
             }
         }
@@ -100,149 +130,152 @@ class FragmentWalkOnLan : Fragment() {
 
     private fun initViews() {
         mRecyclerView = mView.card_recycler_view_wol
-        mRecyclerView!!.setHasFixedSize(true)
-        mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
-        mRecyclerView!!.adapter = mDataAdapter
+        mRecyclerView?.setHasFixedSize(true)
+        mRecyclerView?.layoutManager = LinearLayoutManager(mContext)
+        mRecyclerView?.adapter = mDataAdapter
+    }
+    fun EditText?.getInput():String {
+        return this?.text?.toString()?:""
     }
     private fun setUpTextChange(){
-        mDialogView!!.etvIP1.addTextChangedListener(object :TextWatcher {
+        etvIP1?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
-                    mDialogView!!.etvIP2.requestFocus()
+                    etvIP2?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvIP2.addTextChangedListener(object :TextWatcher {
+        etvIP2?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
-                    mDialogView!!.etvIP3.requestFocus()
+                    etvIP3?.requestFocus()
                 }
 
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvIP3.addTextChangedListener(object :TextWatcher {
+        etvIP3?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
-                    mDialogView!!.etvIP4.requestFocus()
+                   etvIP4?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvIP4.addTextChangedListener(object :TextWatcher {
+        etvIP4?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 3){
-                    mDialogView!!.etvMac1.requestFocus()
+                    etvMac1?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvMac1.addTextChangedListener(object :TextWatcher {
+        etvMac1?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
-                    mDialogView!!.etvMac2.requestFocus()
+                    etvMac2?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvMac2.addTextChangedListener(object :TextWatcher {
+        etvMac2?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
-                    mDialogView!!.etvMac3.requestFocus()
+                    etvMac3?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvMac3.addTextChangedListener(object :TextWatcher {
+        etvMac3?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
-                    mDialogView!!.etvMac4.requestFocus()
+                    etvMac4?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvMac4.addTextChangedListener(object :TextWatcher {
+        etvMac4?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
-                    mDialogView!!.etvMac5.requestFocus()
+                    etvMac5?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvMac5.addTextChangedListener(object :TextWatcher {
+        etvMac5?.addTextChangedListener(object :TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0?.length == 2){
-                    mDialogView!!.etvMac6.requestFocus()
+                   etvMac6?.requestFocus()
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         })
-        mDialogView!!.etvIP2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP2.text.isEmpty()) {
-                mDialogView!!.etvIP1.requestFocus()
+        /*etvIP2?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvIP2?.text.isEmpty()) {
+                etvIP1?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvIP3.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP3.text.isEmpty()) {
-                mDialogView!!.etvIP2.requestFocus()
+        etvIP3?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvIP3?.getInput().isEmpty()) {
+                etvIP2?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvIP4.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvIP4.text.isEmpty()) {
-                mDialogView!!.etvIP3.requestFocus()
+        etvIP4?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvIP4?.text.isEmpty()) {
+                etvIP3?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvMac2.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac2.text.isEmpty()) {
-                mDialogView!!.etvMac1.requestFocus()
+        etvMac2?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvMac2?.text.isEmpty()) {
+                etvMac1?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvMac3.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac3.text.isEmpty()) {
-                mDialogView!!.etvMac2.requestFocus()
+        etvMac3?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvMac3?.text.isEmpty()) {
+                etvMac2?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvMac4.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac4.text.isEmpty()) {
-                mDialogView!!.etvMac3.requestFocus()
+        etvMac4?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvMac4?.text.isEmpty()) {
+                etvMac3?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvMac5.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac5.text.isEmpty()) {
-                mDialogView!!.etvMac4.requestFocus()
+        etvMac5?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvMac5?.text.isEmpty()) {
+                etvMac4?.requestFocus()
                 return@OnKeyListener true
             }
             false
         })
-        mDialogView!!.etvMac6.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && mDialogView!!.etvMac6.text.isEmpty()) {
-                mDialogView!!.etvMac5.requestFocus()
+        etvMac6?.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN && etvMac6?.text.isEmpty()) {
+                etvMac5?.requestFocus()
                 return@OnKeyListener true
             }
             false
-        })
+        })*/
 
     }
     class SendMagicPacket(private val ipAddressWOL:String, private val macAddressWOL:String): AsyncTask<Void, Void, String>() {

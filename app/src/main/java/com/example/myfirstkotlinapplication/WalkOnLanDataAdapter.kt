@@ -40,9 +40,9 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
         viewHolder.pcMac.text = mFilteredList!![i].Mac
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var pcName: TextView = view.findViewById(R.id.tve_pc)
-        var pcIp: TextView = view.findViewById(R.id.tve_ip)
-        var pcMac: TextView = view.findViewById(R.id.tve_mac)
+        var pcName: TextView = view.tve_pc
+        var pcIp: TextView = view.tve_ip
+        var pcMac: TextView = view.tve_mac
     }
     override fun getFilter(): Filter? {
         return null

@@ -1,10 +1,7 @@
 package com.example.myfirstkotlinapplication
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +10,12 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.android.synthetic.main.card_row.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import java.io.IOException;
 import java.io.InputStream;
+import kotlinx.android.synthetic.main.fragment_android_version_info.view.*
 
 class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
     private var mArrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
@@ -105,11 +104,12 @@ class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion
         }
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvname: TextView = view.findViewById(R.id.tv_name)
-        val tvversion: TextView = view.findViewById(R.id.tv_version)
-        val tvapilevel: TextView = view.findViewById(R.id.tv_api_level)
-        val tvreleasedate : TextView = view.findViewById(R.id.tv_release_date)
-        val imageView : ImageView = view.findViewById(R.id.imageView)
+
+        val tvname: TextView = view.tv_name
+        val tvversion: TextView = view.tv_version
+        val tvapilevel: TextView = view.tv_api_level
+        val tvreleasedate : TextView = view.tv_release_date
+        val imageView : ImageView = view.imageView
     }
 
 }

@@ -4,4 +4,6 @@
     <string name="start">START</string>
     <string name="ip">IP:</string>
     <string name="mac">MAC:</string>
+    <string name="ip_value">%s.%s.%s.%s</string>
+    <string name="mac_value">%s:%s:%s:%s:%s:%s</string>
 </resources>
