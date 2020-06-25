@@ -9,18 +9,17 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.walkonlan_card.view.*
+import kotlinx.android.synthetic.main.card_computer.view.*
 import kotlin.collections.ArrayList
 
-class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapter<WalkOnLanDataAdapter.ViewHolder>(), Filterable {
+class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) : RecyclerView.Adapter<DataAdapterWalkOnLan.ViewHolder>(), Filterable {
 
     private var mArrayList: ArrayList<Computer>? = arrayList
     private var mFilteredList: ArrayList<Computer>? = arrayList
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): WalkOnLanDataAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterWalkOnLan.ViewHolder {
         val view =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.walkonlan_card, viewGroup, false)
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_computer, viewGroup, false)
         view.btn_start.setOnClickListener()
         {
             val ipAddressWOL:String = view.tve_ip.text.toString()
@@ -34,7 +33,7 @@ class WalkOnLanDataAdapter(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: WalkOnLanDataAdapter.ViewHolder, i: Int) {
+    override fun onBindViewHolder(viewHolder: DataAdapterWalkOnLan.ViewHolder, i: Int) {
         viewHolder.pcName.text = mFilteredList!![i].PCName
         viewHolder.pcIp.text = mFilteredList!![i].IP
         viewHolder.pcMac.text = mFilteredList!![i].Mac

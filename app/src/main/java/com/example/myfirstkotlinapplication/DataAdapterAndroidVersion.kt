@@ -10,26 +10,25 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.card_row.view.*
+import kotlinx.android.synthetic.main.card_androidversion.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import java.io.IOException;
 import java.io.InputStream;
-import kotlinx.android.synthetic.main.fragment_android_version_info.view.*
 
-class DataAdapter(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapter.ViewHolder>(), Filterable {
+class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapterAndroidVersion.ViewHolder>(), Filterable {
     private var mArrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
     private var mFilteredList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
     private lateinit var mContext: Context
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapter.ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterAndroidVersion.ViewHolder {
         val view =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_row, viewGroup, false)
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
         mContext = viewGroup.context
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: DataAdapter.ViewHolder, i: Int) {
+    override fun onBindViewHolder(viewHolder: DataAdapterAndroidVersion.ViewHolder, i: Int) {
 
         viewHolder.tvname.text = (mFilteredList[i].name)
         viewHolder.tvversion.text = (mFilteredList[i].ver)

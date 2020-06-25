@@ -11,30 +11,15 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
+import com.example.myfirstkotlinapplication.databinding.DialogWoladddeviceBinding
+import com.example.myfirstkotlinapplication.databinding.FragmentWalkonlanBinding
 import com.google.gson.Gson
-
-import kotlinx.android.synthetic.main.fragment_walk_on_lan.view.*
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.*
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.*
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.dialogCancelBtn
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.dialogOKBtn
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP1
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP2
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP3
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvIP4
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac1
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac2
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac3
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac4
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac5
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvMac6
-import kotlinx.android.synthetic.main.walkonlan_dialog_add_device.view.etvPcName
+import kotlinx.android.synthetic.main.dialog_woladddevice.*
 
 import java.io.File
 import java.net.DatagramPacket
@@ -45,38 +30,38 @@ import java.net.InetAddress
 class FragmentWalkOnLan : Fragment() {
 
     private var mRecyclerView: RecyclerView ?= null
-    private var mDataAdapter : WalkOnLanDataAdapter ?= null
+    private var mDataAdapterWalkOnLan : DataAdapterWalkOnLan ?= null
     private lateinit var mContext: Context
-    private lateinit var mView: View
-    private var mJsonData : WalkOnLanDataAdapter.JSONComputerList ?= null
+    private var mJsonDataWalkOnLan : DataAdapterWalkOnLan.JSONComputerList ?= null
     private val mDataPath:String = "/PCList.json"
-    private var mDialogView : View ?= null
+    private lateinit var mBinding : FragmentWalkonlanBinding
+    private lateinit var mDialogBinding : DialogWoladddeviceBinding
+
     @SuppressLint("InflateParams", "StringFormatInvalid")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        mView = inflater.inflate(R.layout.fragment_walk_on_lan, container, false)
+        mBinding = FragmentWalkonlanBinding.inflate(inflater)
+
         mContext = container?.context!!
         initViews()
-
+        mDialogBinding = DialogWoladddeviceBinding.inflate(inflater)
         //Inflate the dialog with custom view
-        mDialogView = LayoutInflater.from(mContext).inflate(R.layout.walkonlan_dialog_add_device, null,false)
-        // Same as below ????????
-        //mDialogView = inflater.inflate(R.layout.walkonlan_dialog_add_device, container,false)
 
-        mView.floatingActionButton.setOnClickListener()
+        mBinding.floatingActionButton.setOnClickListener()
         {
             //AlertDialogBuilder
             val builder = AlertDialog.Builder(mContext)
-                .setView(mDialogView)
+                .setView(mDialogBinding.root)
 
             //Show dialog
             val mAlertDialog = builder!!.show()
 
             // Set button click of custom layout
-            dialogOKBtn?.setOnClickListener(){
+            mDialogBinding.dialogOKBtn.setOnClickListener()
+            {
 
                 val ip = getString(
                     R.string.ip_value,
@@ -84,7 +69,7 @@ class FragmentWalkOnLan : Fragment() {
                     etvIP2?.getInput(),
                     etvIP3?.getInput(),
                     etvIP4?.getInput()
-                ) //mDialogView!!.etvIP1.text.toString() + '.' + mDialogView!!.etvIP2.text.toString() + '.' + mDialogView!!.etvIP3.text.toString() + '.' + mDialogView!!.etvIP4.text.toString()
+                )
                 val mac = getString(
                     R.string.mac_value,
                     etvMac1?.getInput(),
@@ -93,46 +78,46 @@ class FragmentWalkOnLan : Fragment() {
                     etvMac4?.getInput(),
                     etvMac5?.getInput(),
                     etvMac6?.getInput()
-                )//mDialogView!!.etvMac1.text.toString() + ':' + mDialogView!!.etvMac2.text.toString() + ':' + mDialogView!!.etvMac3.text.toString() + ':' + mDialogView!!.etvMac4.text.toString() + ':' + mDialogView!!.etvMac5.text.toString() + ':' + mDialogView!!.etvMac6.text.toString()
+                )
 
                 etvPcName?.getInput()?.let {pcName ->
-                    val computer = WalkOnLanDataAdapter.Computer(pcName, ip,mac)
+                    val computer = DataAdapterWalkOnLan.Computer(pcName, ip,mac)
                     mAlertDialog.dismiss()
-                    mJsonData?.add(computer)
+                    mJsonDataWalkOnLan?.add(computer)
                     val file = File(mContext.filesDir.absolutePath + mDataPath)
-                    Gson().toJson(mJsonData)?.let {data->
+                    Gson().toJson(mJsonDataWalkOnLan)?.let { data->
                         file.writeText(data)
                     }
                 }
 
             }
-           dialogCancelBtn?.setOnClickListener(){
+            mDialogBinding.dialogOKBtn.setOnClickListener(){
                 mAlertDialog.dismiss()
             }
         }
         setUpTextChange()
-        return mView
+        return mBinding.root
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataPath : String = activity?.applicationContext!!.filesDir.absolutePath + mDataPath
         Log.i(LogTag, "DataPath: $dataPath")
         val file = File(dataPath.toString())
-        mJsonData = if (file.exists()) {
+        mJsonDataWalkOnLan = if (file.exists()) {
             val json : String = file.readText()
-            Gson().fromJson(json, WalkOnLanDataAdapter.JSONComputerList::class.java)
+            Gson().fromJson(json, DataAdapterWalkOnLan.JSONComputerList::class.java)
         } else {
-            WalkOnLanDataAdapter.JSONComputerList(arrayListOf<WalkOnLanDataAdapter.Computer>())
+            DataAdapterWalkOnLan.JSONComputerList(arrayListOf<DataAdapterWalkOnLan.Computer>())
         }
-        mDataAdapter = mJsonData?.PCList?.let { WalkOnLanDataAdapter(it) }
+        mDataAdapterWalkOnLan = mJsonDataWalkOnLan?.PCList?.let { DataAdapterWalkOnLan(it) }
 
     }
 
     private fun initViews() {
-        mRecyclerView = mView.card_recycler_view_wol
+        mRecyclerView = mBinding.cardRecyclerViewWol
         mRecyclerView?.setHasFixedSize(true)
         mRecyclerView?.layoutManager = LinearLayoutManager(mContext)
-        mRecyclerView?.adapter = mDataAdapter
+        mRecyclerView?.adapter = mDataAdapterWalkOnLan
     }
     fun EditText?.getInput():String {
         return this?.text?.toString()?:""

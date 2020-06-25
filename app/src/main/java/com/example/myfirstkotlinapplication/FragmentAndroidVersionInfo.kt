@@ -11,8 +11,8 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
+import com.example.myfirstkotlinapplication.databinding.FragmentAndroidversioninfoBinding
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_android_version_info.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,23 +25,23 @@ class FragmentAndroidVersionInfo : Fragment() {
 
     private var mRecyclerView: RecyclerView? = null
     private lateinit var mArrayList: ArrayList<AndroidVersion>
-    private var mAdapter: DataAdapter? = null
+    private var mAdapter: DataAdapterAndroidVersion? = null
     private val mBASEURL = "http://qhcloud.ddns.net/"
     private var mJsonResponse: JSONResponse? = null
-    private lateinit var mView: View
     private lateinit var mContext: Context
-
+    private lateinit var mBinding: FragmentAndroidversioninfoBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        mView = inflater.inflate(R.layout.fragment_android_version_info, container, false)
+        mBinding = FragmentAndroidversioninfoBinding.inflate(inflater)
+
         mContext = container?.context!!
 
         initViews()
 
-        return mView
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +67,7 @@ class FragmentAndroidVersionInfo : Fragment() {
         return super.onOptionsItemSelected(item)
     }
     private fun initViews() {
-        mRecyclerView = mView.card_recycler_view
+        mRecyclerView = mBinding.cardRecycleView
         mRecyclerView!!.setHasFixedSize(true)
         mRecyclerView!!.addItemDecoration(
             DividerItemDecoration(
@@ -97,7 +97,7 @@ class FragmentAndroidVersionInfo : Fragment() {
 
                     mJsonResponse = response.body()
                     mArrayList = ArrayList(mJsonResponse!!.android)
-                    mAdapter = DataAdapter(mArrayList)
+                    mAdapter = DataAdapterAndroidVersion(mArrayList)
                     Log.i(LogTag, "File version: " + mJsonResponse!!.version)
                     setAdapter()
                 } else {

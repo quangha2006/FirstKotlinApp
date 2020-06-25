@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         tools:context=".FragmentWalkOnLan">
     <android.support.v7.widget.RecyclerView
-            android:id="@+id/card_recycler_view_wol"
+            android:id="@+id/cardRecyclerViewWol"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
