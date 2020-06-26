@@ -54,7 +54,7 @@ class FragmentAndroidVersionInfo : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        mRecyclerView!!.adapter = null
+        mRecyclerView?.adapter = null
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -68,14 +68,14 @@ class FragmentAndroidVersionInfo : Fragment() {
     }
     private fun initViews() {
         mRecyclerView = mBinding.cardRecycleView
-        mRecyclerView!!.setHasFixedSize(true)
-        mRecyclerView!!.addItemDecoration(
+        mRecyclerView?.setHasFixedSize(true)
+        mRecyclerView?.addItemDecoration(
             DividerItemDecoration(
                 mContext,
                 LinearLayoutManager.VERTICAL
             )
         )
-        mRecyclerView!!.layoutManager = LinearLayoutManager(mContext)
+        mRecyclerView?.layoutManager = LinearLayoutManager(mContext)
     }
 
     private fun loadJSON() {
@@ -96,7 +96,7 @@ class FragmentAndroidVersionInfo : Fragment() {
                     myToast.show()
 
                     mJsonResponse = response.body()
-                    mArrayList = ArrayList(mJsonResponse!!.android)
+                    mArrayList = ArrayList(mJsonResponse?.android)
                     mAdapter = DataAdapterAndroidVersion(mArrayList)
                     Log.i(LogTag, "File version: " + mJsonResponse!!.version)
                     setAdapter()

@@ -10,6 +10,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.myfirstkotlinapplication.databinding.CardAndroidversionBinding
 import kotlinx.android.synthetic.main.card_androidversion.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -22,18 +23,20 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
     private lateinit var mContext: Context
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterAndroidVersion.ViewHolder {
-        val view =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
         mContext = viewGroup.context
+        /*
+        val layoutInflater = LayoutInflater.from(viewGroup.context)
+        val binding = CardAndroidversionBinding.inflate(layoutInflater)
+        mContext = viewGroup.context
+        return ViewHolder(binding.root)
+         */
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: DataAdapterAndroidVersion.ViewHolder, i: Int) {
 
-        viewHolder.tvname.text = (mFilteredList[i].name)
-        viewHolder.tvversion.text = (mFilteredList[i].ver)
-        viewHolder.tvapilevel.text = (mFilteredList[i].api)
-        viewHolder.tvreleasedate.text = (mFilteredList[i].releasedate)
+        // This is cheat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         var assertPath = "androidversion/android_o.jpg"
         if (mFilteredList[i].name.equals("Marshmallow"))
             assertPath = "androidversion/android_m.jpg"
@@ -45,13 +48,8 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
             assertPath = "androidversion/android_p.jpg"
         if (mFilteredList[i].name.equals("Android 10"))
             assertPath = "androidversion/android_10.jpg"
-        try {
-            val ims : InputStream = mContext.assets.open(assertPath);
-            val drawable =  Drawable.createFromStream(ims, null);
-            viewHolder.imageView.setImageDrawable(drawable)
-        }catch(e:IOException){
-            e.printStackTrace()
-        }
+        //bind data
+        viewHolder.bind(mFilteredList[i],assertPath)
     }
 
     override fun getItemCount(): Int {
@@ -102,13 +100,20 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
             }
         }
     }
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        val tvname: TextView = view.tv_name
-        val tvversion: TextView = view.tv_version
-        val tvapilevel: TextView = view.tv_api_level
-        val tvreleasedate : TextView = view.tv_release_date
-        val imageView : ImageView = view.imageView
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind (android:FragmentAndroidVersionInfo.AndroidVersion, assertPath : String){
+            itemView.tv_name.text = android.name
+            itemView.tv_version.text = android.ver
+            itemView.tv_api_level.text = android.api
+            itemView.tv_release_date.text = android.releasedate
+            try {
+                val ims : InputStream = mContext.assets.open(assertPath);
+                val drawable =  Drawable.createFromStream(ims, null);
+                itemView.imageView.setImageDrawable(drawable)
+            }catch(e:IOException){
+                e.printStackTrace()
+            }
+        }
     }
 
 }

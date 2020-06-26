@@ -25,7 +25,7 @@ class MyPageAdapter(fm:FragmentManager): FragmentPagerAdapter(fm) {
             0 -> "WalkOnLan"
             1 -> "Android Version Info"
             2 -> "DeviceInfo"
-            else -> return "unknow"
+            else -> return "unknown"
         }
     }
 }

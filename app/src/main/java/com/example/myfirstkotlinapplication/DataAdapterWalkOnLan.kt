@@ -9,17 +9,16 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
+import com.example.myfirstkotlinapplication.databinding.CardComputerBinding
 import kotlinx.android.synthetic.main.card_computer.view.*
-import kotlin.collections.ArrayList
 
 class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) : RecyclerView.Adapter<DataAdapterWalkOnLan.ViewHolder>(), Filterable {
 
-    private var mArrayList: ArrayList<Computer>? = arrayList
-    private var mFilteredList: ArrayList<Computer>? = arrayList
+    private var mArrayList: ArrayList<Computer> = arrayList
+    private var mFilteredList: ArrayList<Computer> = arrayList
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterWalkOnLan.ViewHolder {
-        val view =
-            LayoutInflater.from(viewGroup.context).inflate(R.layout.card_computer, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_computer, viewGroup, false)
         view.btn_start.setOnClickListener()
         {
             val ipAddressWOL:String = view.tve_ip.text.toString()
@@ -31,27 +30,41 @@ class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
             FragmentWalkOnLan.SendMagicPacket(ipAddressWOL, macAddressWOL).execute()
         }
         return ViewHolder(view)
+        /*
+        val layoutInflater = LayoutInflater.from(viewGroup.context)
+        val binding = CardComputerBinding.inflate(layoutInflater)
+        binding.btnStart.setOnClickListener()
+        {
+            val ipAddressWOL:String = binding.tveIp.getString()
+            val macAddressWOL:String = binding.tveMac.getString()
+            Log.i(LogTag, "Call Walk On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
+            FragmentWalkOnLan.SendMagicPacket(ipAddressWOL, macAddressWOL).execute()
+        }
+        return ViewHolder(binding.root)
+        */
     }
 
-    override fun onBindViewHolder(viewHolder: DataAdapterWalkOnLan.ViewHolder, i: Int) {
-        viewHolder.pcName.text = mFilteredList!![i].PCName
-        viewHolder.pcIp.text = mFilteredList!![i].IP
-        viewHolder.pcMac.text = mFilteredList!![i].Mac
+    private fun TextView?.getString():String{
+        return this?.text.toString()
     }
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var pcName: TextView = view.tve_pc
-        var pcIp: TextView = view.tve_ip
-        var pcMac: TextView = view.tve_mac
+    override fun onBindViewHolder(viewHolder: DataAdapterWalkOnLan.ViewHolder, i: Int) {
+        viewHolder.bind(mFilteredList[i])
+    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(computer : Computer){
+            itemView.tve_pc.text = computer.PCName
+            itemView.tve_ip.text = computer.IP
+            itemView.tve_mac.text = computer.Mac
+        }
     }
     override fun getFilter(): Filter? {
         return null
     }
     override fun getItemCount(): Int {
-        return mFilteredList!!.size
+        return mFilteredList.size
     }
 
     class JSONComputerList(var PCList:ArrayList<Computer>?=null){
-
         fun add(computer:Computer){
             PCList!!.add(computer)
         }
