@@ -18,21 +18,18 @@ class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
     private var mFilteredList: ArrayList<Computer> = arrayList
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterWalkOnLan.ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_computer, viewGroup, false)
+        /*val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_computer, viewGroup, false)
         view.btn_start.setOnClickListener()
         {
             val ipAddressWOL:String = view.tve_ip.text.toString()
-
             val macAddressWOL:String = view.tve_mac.text.toString()
-
             Log.i(LogTag, "Call Walk On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
-
             FragmentWalkOnLan.SendMagicPacket(ipAddressWOL, macAddressWOL).execute()
         }
         return ViewHolder(view)
-        /*
+        */
         val layoutInflater = LayoutInflater.from(viewGroup.context)
-        val binding = CardComputerBinding.inflate(layoutInflater)
+        val binding = CardComputerBinding.inflate(layoutInflater, viewGroup, false)
         binding.btnStart.setOnClickListener()
         {
             val ipAddressWOL:String = binding.tveIp.getString()
@@ -41,7 +38,6 @@ class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) : RecyclerView.Adapte
             FragmentWalkOnLan.SendMagicPacket(ipAddressWOL, macAddressWOL).execute()
         }
         return ViewHolder(binding.root)
-        */
     }
 
     private fun TextView?.getString():String{

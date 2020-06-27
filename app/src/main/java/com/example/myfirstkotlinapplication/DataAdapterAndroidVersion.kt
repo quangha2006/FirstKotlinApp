@@ -23,15 +23,15 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
     private lateinit var mContext: Context
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterAndroidVersion.ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
+        //val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
+        //return ViewHolder(view)
+
         mContext = viewGroup.context
-        /*
+
         val layoutInflater = LayoutInflater.from(viewGroup.context)
-        val binding = CardAndroidversionBinding.inflate(layoutInflater)
+        val binding = CardAndroidversionBinding.inflate(layoutInflater, viewGroup, false)
         mContext = viewGroup.context
         return ViewHolder(binding.root)
-         */
-        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: DataAdapterAndroidVersion.ViewHolder, i: Int) {
@@ -62,30 +62,22 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
             override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
 
                 val charString = charSequence.toString()
-
                 if (charString.isEmpty()) {
-
                     mFilteredList = mArrayList
                 } else {
-
                     val filteredList = ArrayList<FragmentAndroidVersionInfo.AndroidVersion>()
-
                     for (androidVersion in mArrayList) {
-
                         if (androidVersion.api!!.toLowerCase(Locale.ROOT).contains(charString) || androidVersion.name!!.toLowerCase(
                                 Locale.ROOT
                             ).contains(
                                 charString
                             ) || androidVersion.ver!!.toLowerCase(Locale.ROOT).contains(charString)
                         ) {
-
                             filteredList.add(androidVersion)
                         }
                     }
-
                     mFilteredList = filteredList
                 }
-
                 val filterResults = Filter.FilterResults()
                 filterResults.values = mFilteredList
                 return filterResults

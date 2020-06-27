@@ -3,7 +3,6 @@ package com.example.myfirstkotlinapplication
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -44,13 +43,12 @@ class FragmentWalkOnLan : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        mBinding = FragmentWalkonlanBinding.inflate(inflater)
-
+        mBinding = FragmentWalkonlanBinding.inflate(inflater, container, false)
         mContext = container?.context!!
 
         initViews()
 
-        mDialogBinding = DialogWoladddeviceBinding.inflate(inflater)
+        mDialogBinding = DialogWoladddeviceBinding.inflate(inflater, container, false)
 
         mBinding.floatingActionButton.setOnClickListener()
         {

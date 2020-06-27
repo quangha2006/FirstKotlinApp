@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myfirstkotlinapplication.databinding.FragmentDeviceinfoBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -16,8 +17,11 @@ class FragmentDeviceInfo : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        Log.i(LogTag, "FragmentDeviceInfo onCreateView")
-        return inflater.inflate(R.layout.fragment_deviceinfo, container, false)
+
+        //return inflater.inflate(R.layout.fragment_deviceinfo, container, false)
+        val binding = FragmentDeviceinfoBinding.inflate(inflater, container, false)
+
+        return (binding.root)
     }
 
 }

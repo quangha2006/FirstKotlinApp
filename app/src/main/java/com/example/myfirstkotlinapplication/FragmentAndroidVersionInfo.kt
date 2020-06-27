@@ -35,12 +35,9 @@ class FragmentAndroidVersionInfo : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        mBinding = FragmentAndroidversioninfoBinding.inflate(inflater)
-
+        mBinding = FragmentAndroidversioninfoBinding.inflate(inflater, container, false)
         mContext = container?.context!!
-
         initViews()
-
         return mBinding.root
     }
 
