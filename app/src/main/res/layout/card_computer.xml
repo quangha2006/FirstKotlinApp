@@ -9,15 +9,41 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         card_view:cardCornerRadius="5dp">
+
     <Button
             android:id="@+id/btn_start"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/start"
             android:layout_gravity="right"
+            android:drawableStart="@drawable/ic_icon_power"
+            android:text="@string/start"
+            android:visibility="invisible"
             tools:ignore="RtlHardcoded">
 
     </Button>
+    <LinearLayout
+            android:id="@+id/collum_thirt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00BCD4" />
+
+        <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#E91E63" />
+
+    </LinearLayout>
+
     <LinearLayout
             android:id="@+id/collum_first"
             android:layout_width="wrap_content"

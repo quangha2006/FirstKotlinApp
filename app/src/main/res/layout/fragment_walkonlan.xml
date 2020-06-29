@@ -15,10 +15,11 @@
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="24dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="24dp"
-            android:clickable="true"/>
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:src="@drawable/ic_icon_create" />
 
 </RelativeLayout>
