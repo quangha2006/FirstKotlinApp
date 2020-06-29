@@ -21,26 +21,28 @@
             tools:ignore="RtlHardcoded">
 
     </Button>
+
     <LinearLayout
             android:id="@+id/collum_thirt"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="1dp"
-            android:layout_marginStart="5dp"
             android:layout_gravity="right"
             android:orientation="horizontal">
 
-        <Button
+        <ImageButton
                 android:id="@+id/btn_edit"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#00BCD4" />
+                android:layout_width="50dp"
+                android:backgroundTint="#2196F3"
 
-        <Button
+                card_view:srcCompat="@drawable/ic_icon_edit" />
+
+        <ImageButton
                 android:id="@+id/btn_delete"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="#E91E63" />
+                android:layout_width="50dp"
+                android:backgroundTint="#E91E63"
+                card_view:srcCompat="@drawable/ic_icon_deleteforever" />
 
     </LinearLayout>
 
@@ -76,12 +78,11 @@
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/collum_second"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-
+            android:id="@+id/collum_second"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="45dp"
-        android:orientation="vertical">
+            android:orientation="vertical">
     <TextView
             android:id="@+id/tve_pc"
             android:layout_width="wrap_content"

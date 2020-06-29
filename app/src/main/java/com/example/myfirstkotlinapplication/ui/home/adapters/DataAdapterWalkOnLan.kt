@@ -43,6 +43,7 @@ class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) :
             ).execute()
         }
         binding.btnStart.visibility = View.INVISIBLE
+
         binding.btnDelete.visibility = View.VISIBLE
         binding.btnEdit.visibility = View.VISIBLE
         return ViewHolder(binding.root)
