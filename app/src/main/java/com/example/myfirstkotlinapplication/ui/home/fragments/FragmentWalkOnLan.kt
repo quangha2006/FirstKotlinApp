@@ -1,10 +1,9 @@
-package com.example.myfirstkotlinapplication
+package com.example.myfirstkotlinapplication.ui.home.fragments
 
 import android.app.AlertDialog
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,10 +11,12 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myfirstkotlinapplication.MainActivity.Companion.LogTag
+import com.example.myfirstkotlinapplication.R
 import com.example.myfirstkotlinapplication.base.BaseFragment
 import com.example.myfirstkotlinapplication.databinding.DialogWoladddeviceBinding
 import com.example.myfirstkotlinapplication.databinding.FragmentWalkonlanBinding
+import com.example.myfirstkotlinapplication.ui.home.MainActivity.Companion.LogTag
+import com.example.myfirstkotlinapplication.ui.home.adapters.DataAdapterWalkOnLan
 import com.example.myfirstkotlinapplication.utils.extensions.click
 import com.example.myfirstkotlinapplication.utils.extensions.getInput
 import com.google.gson.Gson
@@ -270,15 +271,22 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
             val json: String = file.readText()
             gson.fromJson(json, DataAdapterWalkOnLan.JSONComputerList::class.java)
         } else {
-            DataAdapterWalkOnLan.JSONComputerList(arrayListOf())
+            DataAdapterWalkOnLan.JSONComputerList(
+                arrayListOf()
+            )
         }
-        mDataAdapterWalkOnLan = mJsonDataWalkOnLan?.PCList?.let { DataAdapterWalkOnLan(it) }
+        mDataAdapterWalkOnLan = mJsonDataWalkOnLan?.PCList?.let {
+            DataAdapterWalkOnLan(
+                it
+            )
+        }
     }
 
     private fun initRecyclerViews() {
         binding.cardRecyclerViewWol.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(mContext)
+            layoutManager =
+                androidx.recyclerview.widget.LinearLayoutManager(mContext)
             adapter = mDataAdapterWalkOnLan
         }
     }
@@ -329,7 +337,12 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
             )
 
             mDialogBinding.etvPcName.getInput()?.let { pcName ->
-                val computer = DataAdapterWalkOnLan.Computer(pcName, ip, mac)
+                val computer =
+                    DataAdapterWalkOnLan.Computer(
+                        pcName,
+                        ip,
+                        mac
+                    )
                 mAlertDialog.dismiss()
 
                 mJsonDataWalkOnLan?.add(computer)

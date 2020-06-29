@@ -4,14 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".FragmentWalkOnLan">
-    <android.support.v7.widget.RecyclerView
+        tools:context=".ui.home.fragments.FragmentWalkOnLan">
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cardRecyclerViewWol"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

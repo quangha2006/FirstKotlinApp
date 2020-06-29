@@ -1,30 +1,36 @@
-package com.example.myfirstkotlinapplication
+package com.example.myfirstkotlinapplication.ui.home.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstkotlinapplication.data.entity.response.Android
 import com.example.myfirstkotlinapplication.databinding.CardAndroidversionBinding
 import kotlinx.android.synthetic.main.card_androidversion.view.*
+import java.io.IOException
+import java.io.InputStream
 import java.util.*
 import kotlin.collections.ArrayList
-import java.io.IOException;
-import java.io.InputStream;
 
-class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion>) : RecyclerView.Adapter<DataAdapterAndroidVersion.ViewHolder>(), Filterable {
-    private var mArrayList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
-    private var mFilteredList: ArrayList<FragmentAndroidVersionInfo.AndroidVersion> = arrayList
+class DataAdapterAndroidVersion(data: ArrayList<Android>) :
+    RecyclerView.Adapter<DataAdapterAndroidVersion.ViewHolder>(),
+    Filterable {
+
+    private var mArrayList: ArrayList<Android> = data
+    private var mFilteredList: ArrayList<Android> = data
     private lateinit var mContext: Context
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): DataAdapterAndroidVersion.ViewHolder {
-        //val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.card_androidversion, viewGroup, false)
-        //return ViewHolder(view)
+    fun setNewData(data: ArrayList<Android>) {
+        mArrayList = data
+        mFilteredList = data
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
 
         mContext = viewGroup.context
 
@@ -34,7 +40,7 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
         return ViewHolder(binding.root)
     }
 
-    override fun onBindViewHolder(viewHolder: DataAdapterAndroidVersion.ViewHolder, i: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
 
         // This is cheat!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         var assertPath = "androidversion/android_o.jpg"
@@ -49,7 +55,7 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
         if (mFilteredList[i].name.equals("Android 10"))
             assertPath = "androidversion/android_10.jpg"
         //bind data
-        viewHolder.bind(mFilteredList[i],assertPath)
+        viewHolder.bind(mFilteredList[i], assertPath)
     }
 
     override fun getItemCount(): Int {
@@ -59,15 +65,16 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
     override fun getFilter(): Filter {
 
         return object : Filter() {
-            override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
 
                 val charString = charSequence.toString()
                 if (charString.isEmpty()) {
                     mFilteredList = mArrayList
                 } else {
-                    val filteredList = ArrayList<FragmentAndroidVersionInfo.AndroidVersion>()
+                    val filteredList = ArrayList<Android>()
                     for (androidVersion in mArrayList) {
-                        if (androidVersion.api!!.toLowerCase(Locale.ROOT).contains(charString) || androidVersion.name!!.toLowerCase(
+                        if (androidVersion.api!!.toLowerCase(Locale.ROOT)
+                                .contains(charString) || androidVersion.name!!.toLowerCase(
                                 Locale.ROOT
                             ).contains(
                                 charString
@@ -78,31 +85,33 @@ class DataAdapterAndroidVersion(arrayList: ArrayList<FragmentAndroidVersionInfo.
                     }
                     mFilteredList = filteredList
                 }
-                val filterResults = Filter.FilterResults()
+                val filterResults = FilterResults()
                 filterResults.values = mFilteredList
                 return filterResults
             }
 
             override fun publishResults(
                 charSequence: CharSequence,
-                filterResults: Filter.FilterResults
+                filterResults: FilterResults
             ) {
-                mFilteredList = filterResults.values as ArrayList<FragmentAndroidVersionInfo.AndroidVersion>
+                mFilteredList =
+                    filterResults.values as ArrayList<Android>
                 notifyDataSetChanged()
             }
         }
     }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind (android:FragmentAndroidVersionInfo.AndroidVersion, assertPath : String){
+        fun bind(android: Android, assertPath: String) {
             itemView.tv_name.text = android.name
             itemView.tv_version.text = android.ver
             itemView.tv_api_level.text = android.api
             itemView.tv_release_date.text = android.releasedate
             try {
-                val ims : InputStream = mContext.assets.open(assertPath);
-                val drawable =  Drawable.createFromStream(ims, null);
+                val ims: InputStream = mContext.assets.open(assertPath);
+                val drawable = Drawable.createFromStream(ims, null);
                 itemView.imageView.setImageDrawable(drawable)
-            }catch(e:IOException){
+            } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
