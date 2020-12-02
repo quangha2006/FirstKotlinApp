@@ -9,11 +9,11 @@ import android.widget.Filterable
 import android.widget.TextView
 import com.example.myfirstkotlinapplication.databinding.CardComputerBinding
 import com.example.myfirstkotlinapplication.ui.home.MainActivity.Companion.LogTag
-import com.example.myfirstkotlinapplication.ui.home.fragments.FragmentWalkOnLan
+import com.example.myfirstkotlinapplication.ui.home.fragments.FragmentWakeOnLan
 import kotlinx.android.synthetic.main.card_computer.view.*
 
-class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<DataAdapterWalkOnLan.ViewHolder>(),
+class DataAdapterWakeOnLan(arrayList: ArrayList<Computer>) :
+    androidx.recyclerview.widget.RecyclerView.Adapter<DataAdapterWakeOnLan.ViewHolder>(),
     Filterable {
 
     private var mArrayList: ArrayList<Computer> = arrayList
@@ -36,16 +36,15 @@ class DataAdapterWalkOnLan(arrayList: ArrayList<Computer>) :
         {
             val ipAddressWOL: String = binding.tveIp.getString()
             val macAddressWOL: String = binding.tveMac.getString()
-            Log.i(LogTag, "Call Walk On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
-            FragmentWalkOnLan.SendMagicPacket(
+            Log.i(LogTag, "Call Wake On Lan IP: $ipAddressWOL macAddress: $macAddressWOL")
+            FragmentWakeOnLan.SendMagicPacket(
                 ipAddressWOL,
                 macAddressWOL
             ).execute()
         }
-        binding.btnStart.visibility = View.INVISIBLE
-
-        binding.btnDelete.visibility = View.VISIBLE
-        binding.btnEdit.visibility = View.VISIBLE
+        binding.btnStart.visibility = View.VISIBLE
+        binding.btnDelete.visibility = View.INVISIBLE
+        binding.btnEdit.visibility = View.INVISIBLE
         return ViewHolder(binding.root)
     }
 

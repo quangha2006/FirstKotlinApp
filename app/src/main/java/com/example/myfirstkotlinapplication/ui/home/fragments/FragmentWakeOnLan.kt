@@ -14,9 +14,9 @@ import android.view.ViewGroup
 import com.example.myfirstkotlinapplication.R
 import com.example.myfirstkotlinapplication.base.BaseFragment
 import com.example.myfirstkotlinapplication.databinding.DialogWoladddeviceBinding
-import com.example.myfirstkotlinapplication.databinding.FragmentWalkonlanBinding
+import com.example.myfirstkotlinapplication.databinding.FragmentWakeonlanBinding
 import com.example.myfirstkotlinapplication.ui.home.MainActivity.Companion.LogTag
-import com.example.myfirstkotlinapplication.ui.home.adapters.DataAdapterWalkOnLan
+import com.example.myfirstkotlinapplication.ui.home.adapters.DataAdapterWakeOnLan
 import com.example.myfirstkotlinapplication.utils.extensions.click
 import com.example.myfirstkotlinapplication.utils.extensions.getInput
 import com.google.gson.Gson
@@ -26,13 +26,13 @@ import java.net.DatagramSocket
 import java.net.InetAddress
 
 
-class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
+class FragmentWakeOnLan : BaseFragment<FragmentWakeonlanBinding>() {
 
     private val gson = Gson()
     private val mDataPath: String = "/PCList.json"
 
-    private var mDataAdapterWalkOnLan: DataAdapterWalkOnLan? = null
-    private var mJsonDataWalkOnLan: DataAdapterWalkOnLan.JSONComputerList? = null
+    private var mDataAdapterWakeOnLan: DataAdapterWakeOnLan? = null
+    private var mJsonDataWakeOnLan: DataAdapterWakeOnLan.JSONComputerList? = null
 
     private lateinit var mDialogBinding: DialogWoladddeviceBinding
     private lateinit var mContext: Context
@@ -52,7 +52,7 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
     override fun bindingView(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) = FragmentWalkonlanBinding.inflate(inflater, container, false)
+    ) = FragmentWakeonlanBinding.inflate(inflater, container, false)
 
     override fun initUIComponent() {
 
@@ -267,16 +267,16 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
         val dataPath = activity?.applicationContext!!.filesDir.absolutePath + mDataPath
         Log.i(LogTag, "DataPath: $dataPath")
         val file = File(dataPath)
-        mJsonDataWalkOnLan = if (file.exists()) {
+        mJsonDataWakeOnLan = if (file.exists()) {
             val json: String = file.readText()
-            gson.fromJson(json, DataAdapterWalkOnLan.JSONComputerList::class.java)
+            gson.fromJson(json, DataAdapterWakeOnLan.JSONComputerList::class.java)
         } else {
-            DataAdapterWalkOnLan.JSONComputerList(
+            DataAdapterWakeOnLan.JSONComputerList(
                 arrayListOf()
             )
         }
-        mDataAdapterWalkOnLan = mJsonDataWalkOnLan?.PCList?.let {
-            DataAdapterWalkOnLan(
+        mDataAdapterWakeOnLan = mJsonDataWakeOnLan?.PCList?.let {
+            DataAdapterWakeOnLan(
                 it
             )
         }
@@ -287,7 +287,7 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
             setHasFixedSize(true)
             layoutManager =
                 androidx.recyclerview.widget.LinearLayoutManager(mContext)
-            adapter = mDataAdapterWalkOnLan
+            adapter = mDataAdapterWakeOnLan
         }
     }
 
@@ -338,16 +338,16 @@ class FragmentWalkOnLan : BaseFragment<FragmentWalkonlanBinding>() {
 
             mDialogBinding.etvPcName.getInput()?.let { pcName ->
                 val computer =
-                    DataAdapterWalkOnLan.Computer(
+                    DataAdapterWakeOnLan.Computer(
                         pcName,
                         ip,
                         mac
                     )
                 mAlertDialog.dismiss()
 
-                mJsonDataWalkOnLan?.add(computer)
+                mJsonDataWakeOnLan?.add(computer)
                 val file = File(mContext.filesDir.absolutePath + mDataPath)
-                Gson().toJson(mJsonDataWalkOnLan)?.let { data ->
+                Gson().toJson(mJsonDataWakeOnLan)?.let { data ->
                     file.writeText(data)
                 }
             }
